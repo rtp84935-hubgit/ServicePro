@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Replies</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0f19;
+            color: white;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #00e5ff;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #9da5b4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .reply-card {
+            background: #151b2b;
+            border: 1px solid #27324a;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        .reply-card:hover {
+            transform: translateY(-4px);
+            border-color: #00e5ff;
+        }
+
+        .row {
+            display: flex;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .label {
+            width: 130px;
+            color: #8c98ad;
+            font-weight: bold;
+        }
+
+        .value {
+            flex: 1;
+            color: #ffffff;
+        }
+
+        .complaint {
+            background: #0e1422;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            color: #dce2ec;
+            line-height: 1.6;
+        }
+
+        .reply {
+            background: rgba(0, 229, 255, 0.08);
+            border-left: 4px solid #00e5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            color: #e9fcff;
+            line-height: 1.6;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: #123d32;
+            color: #42f5b3;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #00e5ff;
+            color: #061018;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #00b8d4;
+            transform: scale(1.03);
+        }
+
+        .empty {
+            text-align: center;
+            background: #151b2b;
+            padding: 50px;
+            border-radius: 15px;
+            color: #9da5b4;
+        }
+
+        .empty i {
+            font-size: 45px;
+            color: #00e5ff;
+            margin-bottom: 15px;
+        }
+
+        @media(max-width:600px) {
+            body {
+                padding: 20px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .label {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1><i class="fa-solid fa-reply"></i> Complaint Replies</h1>
+    <p>View responses to your complaints</p>
+</div>
+
+<div class="container">
+
+    {% if data %}
+
+        {% for i in data %}
+
+        <div class="reply-card">
+
+            <div class="row">
+                <div class="label">
+                    <i class="fa-solid fa-calendar"></i> Date
+                </div>
+
+                <div class="value">
+                    {{ i.date }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    <i class="fa-solid fa-circle-info"></i> Status
+                </div>
+
+                <div class="value">
+                    <span class="status">Replied</span>
+                </div>
+            </div>
+
+            <div>
+                <div class="label">
+                    <i class="fa-solid fa-comment"></i> Complaint
+                </div>
+
+                <div class="complaint">
+                    {{ i.complaints }}
+                </div>
+            </div>
+
+            <div style="margin-top:20px;">
+                <div class="label">
+                    <i class="fa-solid fa-reply"></i> Admin Reply
+                </div>
+
+                <div class="reply">
+                    {{ i.status }}
+                </div>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <i class="fa-solid fa-envelope-open"></i>
+            <h2>No Replies Yet</h2>
+            <p>Your complaints have not received any replies.</p>
+        </div>
+
+    {% endif %}
+
+    <a href="/myapp/customer_home/" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>
+```

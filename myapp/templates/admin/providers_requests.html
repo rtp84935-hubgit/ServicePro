@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Service Provider Verification</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 30px;
+        }
+
+        /* Header */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 i {
+            color: #38bdf8;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: rgba(255,255,255,0.08);
+            padding: 11px 18px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        /* Provider Grid */
+
+        .provider-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card */
+
+        .provider-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        .provider-card:hover {
+            transform: translateY(-6px);
+            border-color: #38bdf8;
+        }
+
+        /* Profile */
+
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #38bdf8;
+            margin-bottom: 12px;
+        }
+
+        .profile h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .service {
+            color: #38bdf8;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Details */
+
+        .details {
+            margin-top: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .detail-row i {
+            width: 25px;
+            color: #38bdf8;
+        }
+
+        .detail-row span {
+            color: #cbd5e1;
+        }
+
+        .detail-row strong {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        /* Status */
+
+        .status {
+            text-align: center;
+            margin: 18px 0;
+        }
+
+        .status span {
+            display: inline-block;
+            padding: 7px 15px;
+            border-radius: 20px;
+            background: rgba(251,191,36,0.15);
+            color: #fbbf24;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .actions a {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .accept {
+            background: #22c55e;
+            color: white;
+        }
+
+        .accept:hover {
+            background: #16a34a;
+            transform: scale(1.03);
+        }
+
+        .reject {
+            background: #ef4444;
+            color: white;
+        }
+
+        .reject:hover {
+            background: #dc2626;
+            transform: scale(1.03);
+        }
+
+        /* Empty */
+
+        .empty {
+            text-align: center;
+            padding: 70px 20px;
+            color: #94a3b8;
+        }
+
+        .empty i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #38bdf8;
+        }
+
+        .empty h2 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        /* Responsive */
+
+        @media(max-width:600px) {
+
+            body {
+                padding: 18px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .provider-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <h1>
+            <i class="fa-solid fa-user-check"></i>
+            Service Provider Verification
+        </h1>
+
+        <a href="/myapp/admin_home/" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- Provider Cards -->
+
+    <div class="provider-container">
+
+        {% for i in data %}
+
+        <div class="provider-card">
+
+            <!-- Profile -->
+
+            <div class="profile">
+
+                <img src="{{i.photo.url}}" alt="Provider Photo">
+
+                <h2>{{i.name}}</h2>
+
+                <div class="service">
+                    {{i.servicetype}}
+                </div>
+
+            </div>
+
+
+            <!-- Details -->
+
+            <div class="details">
+
+                <div class="detail-row">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>Email</span>
+                    <strong>{{i.email}}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>Phone</span>
+                    <strong>{{i.phone}}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Place</span>
+                    <strong>{{i.place}}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <i class="fa-solid fa-venus-mars"></i>
+                    <span>Gender</span>
+                    <strong>{{i.gender}}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <i class="fa-solid fa-calendar"></i>
+                    <span>Date of Birth</span>
+                    <strong>{{i.dob}}</strong>
+                </div>
+
+            </div>
+
+
+            <!-- Current Status -->
+
+            <div class="status">
+
+                <span>
+                    <i class="fa-solid fa-clock"></i>
+                    {{i.status}}
+                </span>
+
+            </div>
+
+
+            <!-- Accept / Reject -->
+
+            <div class="actions">
+
+                <a href="/myapp/verify_provider/{{i.id}}"
+                   class="accept"
+                   onclick="return confirm('Are you sure you want to accept this service provider?')">
+
+                    <i class="fa-solid fa-check"></i>
+                    Accept
+
+                </a>
+
+                <a href="/myapp/reject_provider/{{i.id}}"
+                   class="reject"
+                   onclick="return confirm('Are you sure you want to reject this service provider?')">
+
+                    <i class="fa-solid fa-xmark"></i>
+                    Reject
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty">
+
+            <i class="fa-solid fa-user-shield"></i>
+
+            <h2>No Pending Providers</h2>
+
+            <p>There are currently no service providers waiting for verification.</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>
+

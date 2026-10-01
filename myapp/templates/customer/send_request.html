@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Service Request</title>
+
+    <link rel="stylesheet" href="send_request.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="request-card">
+
+        <div class="header">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+            <h2>Send Service Request</h2>
+
+            <p>Fill in your location details to request this service provider.</p>
+
+        </div>
+
+        <form action="/myapp/send_request_post/" method="post">
+
+            {% csrf_token %}
+            <input type="hidden" value="{{data.id}}" name="sid"/>
+<div class="input-box">
+    <label>Service Provider</label>
+    <input type="text" id="worker" name="worker" value="{{data.name}}" readonly>
+</div>
+
+            <div class="input-box">
+    <label>Latitude</label>
+    <input type="text" id="latitude" name="latitude" readonly>
+</div>
+
+<div class="input-box">
+    <label>Longitude</label>
+    <input type="text" id="longitude" name="longitude" readonly>
+</div>
+
+
+<button type="button" class="location-btn" onclick="getLocation()">
+    <i class="fa-solid fa-location-crosshairs"></i>
+    Fetch Current Location
+</button>
+
+
+<div class="input-box">
+    <label>Place</label>
+    <input type="text" id="place" name="place" readonly>
+</div>
+
+
+<div class="input-box">
+    <label>Post</label>
+    <input type="text" id="post" name="post" readonly>
+</div>
+
+
+<div class="input-box">
+    <label>PIN Code</label>
+    <input type="number" id="pin" name="pin" readonly>
+</div>
+<div class="input-box">
+    <label>
+        <i class="fa-solid fa-file-lines"></i> Problem Description
+    </label>
+    <textarea
+        name="problem"
+        rows="5"
+        placeholder="Describe your problem in detail..."
+        required></textarea>
+</div>
+
+            <button type="submit">
+                <i class="fa-solid fa-paper-plane"></i>
+                Send Request
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0b1120,#111827,#1e293b);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+}
+.input-box{
+    margin-bottom: 20px;
+}
+
+.input-box label{
+    display: block;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.input-box label i{
+    color: #00d4ff;
+    margin-right: 8px;
+}
+
+.input-box textarea{
+    width: 100%;
+    padding: 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 15px;
+    resize: vertical;
+    min-height: 120px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-box textarea::placeholder{
+    color: rgba(255,255,255,0.6);
+}
+
+.input-box textarea:focus{
+    border-color: #00d4ff;
+    box-shadow: 0 0 12px rgba(0,212,255,0.4);
+}
+
+.container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.request-card{
+    width:500px;
+    background:#111827;
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 20px 40px rgba(0,0,0,.45);
+}
+.location-btn{
+    width:100%;
+    height:50px;
+    margin-bottom:20px;
+    background:#10b981;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.location-btn:hover{
+    background:#059669;
+}
+
+.location-btn i{
+    margin-right:8px;
+}
+.header{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    text-align:center;
+    padding:35px;
+}
+
+.header i{
+    font-size:50px;
+    color:white;
+    margin-bottom:15px;
+}
+
+.header h2{
+    color:white;
+    margin-bottom:10px;
+}
+
+.header p{
+    color:#dbeafe;
+}
+
+form{
+    padding:35px;
+}
+
+.input-box{
+    margin-bottom:20px;
+}
+
+.input-box label{
+    display:block;
+    margin-bottom:8px;
+    color:#60a5fa;
+    font-weight:600;
+}
+
+.input-box input{
+    width:100%;
+    height:50px;
+    border:none;
+    outline:none;
+    border-radius:10px;
+    background:#1f2937;
+    color:white;
+    padding:0 15px;
+    border:1px solid rgba(255,255,255,.08);
+    font-size:15px;
+}
+
+.input-box input::placeholder{
+    color:#9ca3af;
+}
+
+.input-box input:focus{
+    border:1px solid #3b82f6;
+    box-shadow:0 0 10px rgba(59,130,246,.4);
+}
+
+button{
+    width:100%;
+    height:52px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+button i{
+    margin-right:8px;
+}
+
+@media(max-width:600px){
+
+.request-card{
+    width:100%;
+}
+
+form{
+    padding:25px;
+}
+
+.header{
+    padding:25px;
+}
+
+}
+</style>
+<script>
+
+function getLocation(){
+
+    if(navigator.geolocation){
+
+        navigator.geolocation.getCurrentPosition(
+            
+            function(position){
+
+                let latitude = position.coords.latitude;
+                let longitude = position.coords.longitude;
+
+
+                document.getElementById("latitude").value = latitude;
+                document.getElementById("longitude").value = longitude;
+
+
+                getAddress(latitude,longitude);
+
+            },
+
+
+            function(){
+
+                alert("Location permission denied");
+
+            }
+
+        );
+
+    }
+    else{
+
+        alert("Geolocation not supported");
+
+    }
+
+}
+
+
+
+async function getAddress(lat,lon){
+
+    let url =
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+
+
+    let response = await fetch(url);
+
+    let data = await response.json();
+
+
+    let address = data.address;
+
+
+    // Place
+    let place =
+    address.city ||
+    address.town ||
+    address.village ||
+    address.suburb ||
+    "";
+
+
+    // Post Office
+    let post =
+    address.post_office ||
+    address.county ||
+    address.state_district ||
+    "";
+
+
+    // PIN
+    let pin =
+    address.postcode || "";
+
+
+
+    document.getElementById("place").value = place;
+
+    document.getElementById("post").value = post;
+
+    document.getElementById("pin").value = pin;
+
+
+}
+
+</script>
+</body>
+</html>

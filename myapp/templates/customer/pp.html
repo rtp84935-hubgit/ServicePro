@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment</title>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
+}
+
+.container{
+    width:420px;
+}
+
+.payment-card{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:18px;
+    padding:35px;
+    color:white;
+    text-align:center;
+    box-shadow:0 15px 35px rgba(0,0,0,.45);
+}
+
+.payment-icon{
+    width:90px;
+    height:90px;
+    background:#2563eb;
+    margin:auto;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+h2{
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#cbd5e1;
+    margin-bottom:30px;
+    font-size:15px;
+}
+
+.details{
+    background:#1f2937;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:25px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin:15px 0;
+    font-size:16px;
+}
+
+.row span:first-child{
+    color:#9ca3af;
+}
+
+.row span:last-child{
+    font-weight:bold;
+}
+
+.pay-btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.pay-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-3px);
+}
+
+.secure{
+    margin-top:20px;
+    color:#9ca3af;
+    font-size:14px;
+}
+
+.secure i{
+    color:#22c55e;
+}
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="payment-card">
+
+        <div class="payment-icon">
+            <i class="fas fa-credit-card"></i>
+        </div>
+
+        <h2>Secure Payments</h2>
+
+        <p class="subtitle">
+            Complete your payment safely using Razorpay.
+        </p>
+
+        <div class="details">
+
+            <div class="row">
+                <span>Amount</span>
+                <span>₹ {{ amount }}</span>
+            </div>
+
+            <div class="row">
+                <span>Currency</span>
+                <span>{{ currency }}</span>
+            </div>
+
+            <div class="row">
+                <span>Merchant</span>
+                <span>Service Provider</span>
+            </div>
+
+        </div>
+
+        <button id="pay-button" class="pay-btn">
+            <i class="fas fa-wallet"></i>
+            Proceed to Payment
+        </button>
+
+        <div class="secure">
+            <i class="fas fa-lock"></i>
+            100% Secure Payment Gateway
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+var options = {
+    key: '{{ razorpay_api_key }}',
+    amount: '{{ amount_paise }}',
+    currency: '{{ currency }}',
+
+    name: 'Service Provider',
+
+    description: 'Service Payment',
+
+    image: '',
+
+    prefill: {
+        name: 'Customer',
+        email: 'customer@example.com',
+    },
+
+    theme: {
+        color: '#2563eb'
+    },
+
+    handler: function (response) {
+
+        alert("Payment Successful\n\nPayment ID : " + response.razorpay_payment_id);
+
+        window.location = "/myapp/userpayment_post/";
+
+    }
+
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById("pay-button").onclick = function(e){
+
+    rzp.open();
+
+    e.preventDefault();
+
+}
+
+</script>
+
+</body>
+</html>

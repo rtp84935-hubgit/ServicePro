@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+:root{
+    --bg:            #090d16;
+    --surface:       #10162399;
+    --surface-solid: #121a2a;
+    --surface-hover: #182339;
+    --border:        rgba(148,163,184,.10);
+    --border-strong: rgba(148,163,184,.18);
+    --text:          #e8ecf5;
+    --text-muted:    #8993a8;
+    --text-faint:    #5c6784;
+
+    --accent:        #5b8cff;
+    --accent-dim:    rgba(91,140,255,.14);
+
+    --c-request:     #a78bfa;
+    --c-provider:    #5b8cff;
+    --c-customer:    #34d399;
+    --c-complaint:   #fb7185;
+    --c-password:    #fbbf24;
+
+    --radius:        14px;
+    --sidebar-w:     264px;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:
+        radial-gradient(circle at 15% 0%, rgba(91,140,255,.08), transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(167,139,250,.06), transparent 40%),
+        var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+a{ color:inherit; }
+
+/* ---------- Sidebar ---------- */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:var(--sidebar-w);
+    height:100vh;
+    background:var(--surface-solid);
+    border-right:1px solid var(--border);
+    padding:28px 20px;
+    display:flex;
+    flex-direction:column;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:6px 8px 28px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:24px;
+}
+
+.logo .logo-icon{
+    width:44px;
+    height:44px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:var(--accent-dim);
+    color:var(--accent);
+    font-size:20px;
+}
+
+.logo-text h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:17px;
+    font-weight:600;
+    letter-spacing:.2px;
+}
+
+.logo-text span{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.menu-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    padding:0 12px;
+    margin:4px 0 10px;
+}
+
+.menu a{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-decoration:none;
+    color:var(--text-muted);
+    padding:13px 16px;
+    border-radius:10px;
+    font-size:14.5px;
+    font-weight:500;
+    transition:.2s ease;
+}
+
+.menu a i{
+    font-size:16px;
+    width:20px;
+    text-align:center;
+    color:var(--text-faint);
+    transition:.2s ease;
+}
+
+.menu a::before{
+    content:"";
+    position:absolute;
+    left:-20px;
+    top:50%;
+    transform:translateY(-50%);
+    height:0;
+    width:3px;
+    border-radius:0 3px 3px 0;
+    background:var(--accent);
+    transition:.2s ease;
+}
+
+.menu a:hover{
+    background:var(--surface-hover);
+    color:var(--text);
+}
+
+.menu a:hover i{ color:var(--accent); }
+
+.menu a.active{
+    background:var(--accent-dim);
+    color:var(--text);
+}
+
+.menu a.active i{ color:var(--accent); }
+
+.menu a.active::before{
+    height:22px;
+}
+
+.sidebar-foot{
+    margin-top:auto;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--text-faint);
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.dot-live{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#34d399;
+    box-shadow:0 0 0 3px rgba(52,211,153,.18);
+}
+
+/* ---------- Main ---------- */
+
+.main{
+    margin-left:var(--sidebar-w);
+    padding:40px 48px 60px;
+    max-width:1240px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:32px;
+    gap:24px;
+    flex-wrap:wrap;
+}
+
+.header .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:10px;
+}
+
+.header h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:-.3px;
+    margin-bottom:8px;
+}
+
+.header p{
+    color:var(--text-muted);
+    font-size:14.5px;
+}
+
+.admin-chip{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--surface-solid);
+    border:1px solid var(--border-strong);
+    padding:10px 18px 10px 12px;
+    border-radius:30px;
+    flex-shrink:0;
+}
+
+.admin-chip .avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--accent-dim);
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+}
+
+.admin-chip .who{ line-height:1.25; }
+
+.admin-chip .who strong{
+    display:block;
+    font-size:13.5px;
+    font-weight:600;
+}
+
+.admin-chip .who span{
+    font-size:11.5px;
+    color:var(--text-faint);
+}
+
+/* ---------- Status strip (signature element) ---------- */
+
+.status-strip{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    background:var(--surface-solid);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    margin-bottom:36px;
+    overflow:hidden;
+}
+
+.status-item{
+    padding:18px 22px;
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.status-item:last-child{ border-right:none; }
+
+.status-item .s-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.status-item .s-value{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:26px;
+    font-weight:700;
+}
+
+.status-item .s-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    flex-shrink:0;
+}
+
+/* ---------- Cards ---------- */
+
+.section-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:16px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:22px;
+}
+
+.card{
+    position:relative;
+    background:var(--surface-solid);
+    border-radius:var(--radius);
+    padding:30px 28px;
+    border:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    transition:.25s ease;
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:3px;
+    background:var(--card-color);
+    opacity:.7;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:var(--border-strong);
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+
+.card .card-icon{
+    width:52px;
+    height:52px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    background:color-mix(in srgb, var(--card-color) 16%, transparent);
+    color:var(--card-color);
+    margin-bottom:20px;
+}
+
+.card h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:17.5px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:var(--text-muted);
+    font-size:13.5px;
+    line-height:1.6;
+    margin-bottom:24px;
+    flex-grow:1;
+}
+
+.card a{
+    text-decoration:none;
+    color:#fff;
+    background:var(--card-color);
+    padding:11px 22px;
+    border-radius:9px;
+    font-size:13.5px;
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:.2s ease;
+}
+
+.card a:hover{
+    filter:brightness(1.12);
+    gap:11px;
+}
+
+.request  { --card-color: var(--c-request); }
+.provider { --card-color: var(--c-provider); }
+.customer { --card-color: var(--c-customer); }
+.complaint{ --card-color: var(--c-complaint); }
+.password { --card-color: var(--c-password); }
+
+/* ---------- Footer ---------- */
+
+.footer{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:1px solid var(--border);
+    text-align:center;
+    color:var(--text-faint);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.3px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:900px){
+
+.sidebar{
+    width:100%;
+    position:relative;
+    height:auto;
+}
+
+.main{
+    margin-left:0;
+    padding:32px 24px 48px;
+}
+
+.status-strip{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.status-item:nth-child(2){ border-right:none; }
+
+.header{
+    flex-direction:column;
+}
+
+}
+
+@media(max-width:480px){
+
+.status-strip{
+    grid-template-columns:1fr;
+}
+
+.status-item{
+    border-right:none !important;
+    border-bottom:1px solid var(--border);
+}
+
+.status-item:last-child{ border-bottom:none; }
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="logo-text">
+            <h2>Admin Panel</h2>
+            <span>Control Center</span>
+        </div>
+    </div>
+
+    <div class="menu">
+        <div class="menu-label">Manage</div>
+
+        <a href="/myapp/providers_requests/">
+            <i class="fa-solid fa-user-check"></i>
+            Provider Requests
+        </a>
+
+        <a href="/myapp/view_serviceproviders/" class="active">
+            <i class="fa-solid fa-user-gear"></i>
+            Service Providers
+        </a>
+
+        <a href="/myapp/view_customers/">
+            <i class="fa-solid fa-users"></i>
+            Customers
+        </a>
+
+        <a href="/myapp/view_complaints/">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Complaints
+        </a>
+
+        <a href="/myapp/changepassword/">
+            <i class="fa-solid fa-key"></i>
+            Change Password
+        </a>
+         <a href="/myapp/logout_page/">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+</a>
+    </div>
+
+    <div class="sidebar-foot">
+        <span class="dot-live"></span>
+        System online
+    </div>
+
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <div>
+            <div class="eyebrow">Dashboard</div>
+            <h1>Welcome back, Administrator</h1>
+            <p>Here's what's happening across the platform today.</p>
+        </div>
+
+        <div class="admin-chip">
+            <div class="avatar"><i class="fa-solid fa-user-secret"></i></div>
+            <div class="who">
+                <strong>Administrator</strong>
+                <span>Super Admin</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-strip">
+        <div class="status-item">
+            <span class="s-label"><span class="s-dot" style="background:var(--c-request)"></span>Pending Requests</span>
+            <span class="s-value">{{pcount}}</span>
+        </div>
+        <div class="status-item">
+            <span class="s-label"><span class="s-dot" style="background:var(--c-provider)"></span>Active Providers</span>
+            <span class="s-value">{{ppcount}}</span>
+        </div>
+        <div class="status-item">
+            <span class="s-label"><span class="s-dot" style="background:var(--c-customer)"></span>Customers</span>
+            <span class="s-value">{{ccount}}</span>
+        </div>
+        <div class="status-item">
+            <span class="s-label"><span class="s-dot" style="background:var(--c-complaint)"></span>Pending Complaints</span>
+            <span class="s-value">{{Ccount}}</span>
+        </div>
+        <div class="status-item">
+            <span class="s-label"><span class="s-dot" style="background:#34d399"></span>Uptime</span>
+            <span class="s-value">99.9%</span>
+        </div>
+    </div>
+
+    <div class="section-label">Quick Access</div>
+
+    <div class="cards">
+
+        <div class="card request">
+            <div class="card-icon"><i class="fa-solid fa-user-check"></i></div>
+            <h2>Provider Requests</h2>
+            <p>Approve or reject newly registered service providers.</p>
+            <a href="/myapp/providers_requests/">Open <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card provider">
+            <div class="card-icon"><i class="fa-solid fa-user-gear"></i></div>
+            <h2>Service Providers</h2>
+            <p>Manage all approved service providers.</p>
+            <a href="/myapp/view_serviceproviders/">Open <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card customer">
+            <div class="card-icon"><i class="fa-solid fa-users"></i></div>
+            <h2>Customers</h2>
+            <p>View and manage registered customers.</p>
+            <a href="/myapp/view_customers/">Open <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card complaint">
+            <div class="card-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <h2>Complaints</h2>
+            <p>View customer complaints and resolve issues.</p>
+            <a href="/myapp/view_complaints/">Open <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card password">
+            <div class="card-icon"><i class="fa-solid fa-key"></i></div>
+            <h2>Change Password</h2>
+            <p>Update your administrator password securely.</p>
+            <a href="/myapp/changepassword/">Open <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 Service Provider Management System
+    </div>
+
+</div>
+
+</body>
+</html>

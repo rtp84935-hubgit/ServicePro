@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Approved Service Providers</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+    :root{
+        --paper:      #14171C;
+        --paper-card: #1B1F26;
+        --ink:        #ECEDE7;
+        --ink-soft:   #8D93A0;
+        --line:       #2A2E36;
+        --chip:       #262B33;
+        --verified:   #4BC2A8;
+        --verified-bg:rgba(75,194,168,.12);
+        --risk:       #E2703F;
+        --risk-bg:    rgba(226,112,63,.14);
+        --amber:      #D9A24B;
+
+        --display: "Space Grotesk", sans-serif;
+        --body:    "Inter", sans-serif;
+        --mono:    "IBM Plex Mono", monospace;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+        background:
+            radial-gradient(circle at 1px 1px, rgba(255,255,255,.045) 1px, transparent 0) 0 0/22px 22px,
+            var(--paper);
+        color: var(--ink);
+        font-family: var(--body);
+        min-height: 100vh;
+    }
+
+    /* ---------- navbar ---------- */
+    .navbar{
+        height: 76px;
+        background: var(--paper-card);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+    }
+
+    .logo{
+        font-family: var(--display);
+        font-size: 20px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: .01em;
+    }
+
+    .logo i{
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--verified);
+        color: #0C1210;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    .logo span.tag{
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 500;
+        color: var(--ink-soft);
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 3px 6px;
+        margin-left: 4px;
+    }
+
+    .back-btn{
+        text-decoration: none;
+        color: var(--ink);
+        background: transparent;
+        border: 1px solid var(--line);
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: border-color .15s ease, background .15s ease;
+    }
+
+    .back-btn:hover{
+        border-color: var(--verified);
+        background: var(--chip);
+        color: var(--ink);
+    }
+
+    /* ---------- heading ---------- */
+    .container{ padding: 44px 40px 60px; max-width: 1360px; margin: 0 auto; }
+
+    .heading{
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 34px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 24px;
+    }
+
+    .heading .eyebrow{
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 8px;
+    }
+
+    .heading h1{
+        font-family: var(--display);
+        font-size: 34px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    .heading p{
+        color: var(--ink-soft);
+        font-size: 14px;
+        margin-top: 6px;
+    }
+
+    .registry-count{
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--ink-soft);
+        text-align: right;
+    }
+
+    .registry-count strong{
+        display: block;
+        font-family: var(--display);
+        font-size: 28px;
+        color: var(--ink);
+        font-weight: 700;
+    }
+
+    /* ---------- grid ---------- */
+    .provider-grid{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+    }
+
+    /* ---------- card ---------- */
+    .provider-card{
+        background: var(--paper-card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 0;
+        position: relative;
+        overflow: hidden;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .provider-card:hover{
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(0,0,0,.45);
+    }
+
+    .card-index{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-bottom: 1px dashed var(--line);
+    }
+
+    .card-index .no{
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--ink-soft);
+        letter-spacing: .06em;
+    }
+
+    .seal{
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        padding: 4px 9px;
+        border-radius: 20px;
+        border: 1px solid var(--verified);
+        color: var(--verified);
+        background: var(--verified-bg);
+    }
+
+    .provider-card.flagged .seal{
+        border-color: var(--risk);
+        color: var(--risk);
+        background: var(--risk-bg);
+    }
+
+    .profile{
+        text-align: center;
+        padding: 22px 24px 18px;
+    }
+
+    .profile img{
+        width: 92px;
+        height: 92px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        margin-bottom: 14px;
+    }
+
+    .profile h2{
+        font-family: var(--display);
+        font-size: 19px;
+        font-weight: 600;
+    }
+
+    .service{
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .service i{ color: var(--verified); }
+
+    /* ---------- complaints ledger line ---------- */
+    .complaint-card{
+        margin: 0 24px 20px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        background: var(--paper);
+    }
+
+    .provider-card.flagged .complaint-card{
+        border-color: var(--risk);
+        background: var(--risk-bg);
+    }
+
+    .complaint-card small{
+        display: block;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 4px;
+    }
+
+    .complaint-card strong{
+        font-family: var(--display);
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1;
+    }
+
+    .provider-card.flagged .complaint-card strong{ color: var(--risk); }
+
+    .complaint-card__block{
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: #fff;
+        background: var(--risk);
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 7px;
+        white-space: nowrap;
+        transition: background .15s ease;
+    }
+
+    .complaint-card__block:hover{ background: #8f3016; }
+    .complaint-card__block:focus-visible{ outline: 2px solid var(--risk); outline-offset: 2px; }
+
+    /* ---------- details ---------- */
+    .details{
+        border-top: 1px solid var(--line);
+        padding: 18px 24px 6px;
+    }
+
+    .detail-row{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 13px;
+        font-size: 13px;
+    }
+
+    .detail-row i{
+        width: 16px;
+        color: var(--ink-soft);
+        font-size: 13px;
+    }
+
+    .detail-row .label{
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        min-width: 64px;
+    }
+
+    .detail-row span.value{
+        color: var(--ink);
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+    .status{
+        background: var(--verified-bg);
+        color: var(--verified) !important;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        font-family: var(--mono);
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .view-btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+        text-decoration: none;
+        background: var(--chip);
+        border: 1px solid var(--line);
+        color: var(--ink);
+        padding: 13px;
+        margin: 20px 24px 24px;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 13px;
+        transition: background .15s ease, border-color .15s ease;
+    }
+
+    .view-btn:hover{ background: var(--verified); border-color: var(--verified); color: #0C1210; }
+
+    /* ---------- empty state ---------- */
+    .empty{
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--ink-soft);
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+        background: var(--paper-card);
+    }
+/* ---------- service filter ---------- */
+
+.filter-section{
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-title{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.filter-title i{
+    color: var(--verified);
+}
+
+.filter-buttons{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-btn{
+    border: 1px solid var(--line);
+    background: var(--chip);
+    color: var(--ink-soft);
+
+    padding: 9px 14px;
+    border-radius: 8px;
+
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    transition: .2s ease;
+}
+
+.filter-btn i{
+    font-size: 11px;
+}
+
+.filter-btn:hover{
+    border-color: var(--verified);
+    color: var(--ink);
+}
+
+.filter-btn.active{
+    background: var(--verified);
+    border-color: var(--verified);
+    color: #0C1210;
+}
+
+.filter-btn.active i{
+    color: #0C1210;
+}
+
+@media(max-width:700px){
+
+    .filter-section{
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .filter-buttons{
+        width: 100%;
+    }
+
+    .filter-btn{
+        flex: 1;
+        justify-content: center;
+    }
+}
+    .empty i{ font-size: 46px; margin-bottom: 16px; color: var(--ink-soft); }
+    .empty h2{ font-family: var(--display); font-size: 20px; color: var(--ink); margin-bottom: 6px; }
+    .empty p{ font-size: 13px; }
+
+    @media (max-width: 600px){
+        .navbar{ padding: 0 20px; }
+        .container{ padding: 30px 16px 40px; }
+        .heading{ flex-direction: column; align-items: flex-start; }
+        .registry-count{ text-align: left; }
+        .heading h1{ font-size: 26px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        .provider-card, .back-btn, .view-btn, .complaint-card__block{ transition: none; }
+        .provider-card:hover{ transform: none; }
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-address-card"></i>
+            Admin Panel
+            <span class="tag">Registry</span>
+        </div>
+
+        <a href="/myapp/admin_home/" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </a>
+    </div>
+
+    <div class="container">
+
+        <div class="heading">
+            <div>
+                <div class="eyebrow">Provider Directory</div>
+                <h1>Approved Service Providers</h1>
+                <p>Verified accounts currently active on the platform</p>
+            </div>
+            <div class="registry-count">
+                On record
+                <strong>{{data|length}}</strong>
+            </div>
+        </div>
+        <!-- Service Filter -->
+<div class="filter-section">
+
+    <div class="filter-title">
+        <i class="fa-solid fa-filter"></i>
+        <span>Filter by Service</span>
+    </div>
+
+    <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterProviders('all', this)">
+            <i class="fa-solid fa-users"></i>
+            All
+        </button>
+
+        <button class="filter-btn" onclick="filterProviders('plumber', this)">
+            <i class="fa-solid fa-faucet"></i>
+            Plumber
+        </button>
+
+        <button class="filter-btn" onclick="filterProviders('electrician', this)">
+            <i class="fa-solid fa-bolt"></i>
+            Electrician
+        </button>
+
+        <button class="filter-btn" onclick="filterProviders('painter', this)">
+            <i class="fa-solid fa-paint-roller"></i>
+            Painter
+        </button>
+
+        <button class="filter-btn" onclick="filterProviders('carpenter', this)">
+            <i class="fa-solid fa-hammer"></i>
+            Carpenter
+        </button>
+
+        <button class="filter-btn" onclick="filterProviders('mechanic', this)">
+            <i class="fa-solid fa-wrench"></i>
+            Mechanic
+        </button>
+    </div>
+
+</div>
+        <div class="provider-grid">
+
+            {% for i in data %}
+
+            <div class="provider-card{% if i.total >= 3 %} flagged{% endif %}"
+     data-service="{{i.servicetype|lower}}">
+
+                <div class="card-index">
+                    <span class="no">NO. {{ forloop.counter|stringformat:"03d" }}</span>
+                    <span class="seal">{% if i.total >= 3 %}Under review{% else %}Verified{% endif %}</span>
+                </div>
+
+                <div class="profile">
+                    <img src="{{i.photo.url}}" alt="{{i.name}}">
+                    <h2>{{i.name}}</h2>
+                    <div class="service">
+                        <i class="fa-solid fa-briefcase"></i>
+                        {{i.servicetype}}
+                    </div>
+                </div>
+
+                <div class="complaint-card">
+                    <div>
+                        <small>Total Complaints</small>
+                        <strong>{{i.total}}</strong>
+                    </div>
+                    {% if i.total >= 1 %}
+                    <a href="/myapp/block_provider/{{i.id}}" class="complaint-card__block">
+                        <i class="fa-solid fa-ban"></i>
+                        Block
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="details">
+
+                    <div class="detail-row">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span class="label">Email</span>
+                        <span class="value">{{i.email}}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <i class="fa-solid fa-phone"></i>
+                        <span class="label">Phone</span>
+                        <span class="value">{{i.phone}}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span class="label">Place</span>
+                        <span class="value">{{i.place}}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <i class="fa-solid fa-calendar"></i>
+                        <span class="label">DOB</span>
+                        <span class="value">{{i.dob}}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <i class="fa-solid fa-venus-mars"></i>
+                        <span class="label">Gender</span>
+                        <span class="value">{{i.gender}}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span class="label">Status</span>
+                        <span class="status">Approved</span>
+                    </div>
+
+                </div>
+
+                <!-- <a href="/myapp/view_service_provider/{{i.id}}/" class="view-btn">
+                    <i class="fa-solid fa-eye"></i>
+                    View Details
+                </a> -->
+
+            </div>
+
+            {% empty %}
+
+            <div class="empty">
+                <i class="fa-solid fa-users-slash"></i>
+                <h2>No Approved Providers</h2>
+                <p>No service providers have been approved yet.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <script>
+
+function filterProviders(service, button){
+
+    // Change active button
+    document.querySelectorAll('.filter-btn').forEach(function(btn){
+        btn.classList.remove('active');
+    });
+
+    button.classList.add('active');
+
+    // Get all provider cards
+    const cards = document.querySelectorAll('.provider-card');
+
+    cards.forEach(function(card){
+
+        const providerService = card.dataset.service.toLowerCase();
+
+        if(service === 'all' || providerService === service){
+
+            card.style.display = 'block';
+
+        }else{
+
+            card.style.display = 'none';
+
+        }
+
+    });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reply to Complaint</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0f172a;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .card {
+            background: #1e293b;
+
+            padding: 35px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title .icon {
+            width: 65px;
+            height: 65px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 50%;
+
+            background: #172554;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #38bdf8;
+
+            font-size: 28px;
+        }
+
+        .title h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .title p {
+            color: #94a3b8;
+        }
+
+        /* CUSTOMER INFO */
+
+        .customer-info {
+            background: #111827;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .customer-info h3 {
+            margin-bottom: 12px;
+
+            color: #38bdf8;
+        }
+
+        .info-row {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 9px 0;
+
+            color: #cbd5e1;
+        }
+
+        .info-row i {
+            width: 20px;
+
+            color: #38bdf8;
+        }
+
+        /* COMPLAINT */
+
+        .complaint {
+            background: #111827;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin-bottom: 22px;
+
+            color: #cbd5e1;
+
+            line-height: 1.6;
+        }
+
+        .complaint-title {
+            color: #38bdf8;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        /* FORM */
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+
+            min-height: 150px;
+
+            resize: vertical;
+
+            background: #0f172a;
+
+            border: 1px solid #334155;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            color: white;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #38bdf8;
+
+            box-shadow:
+                0 0 0 2px rgba(56,189,248,0.15);
+        }
+
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        /* BUTTONS */
+
+        .buttons {
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 22px;
+        }
+
+        .buttons a,
+        .buttons button {
+            flex: 1;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            border: none;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .send {
+            background: #0ea5e9;
+
+            color: white;
+        }
+
+        .send:hover {
+            background: #0284c7;
+        }
+
+        .cancel {
+            background: #334155;
+
+            color: white;
+        }
+
+        .cancel:hover {
+            background: #475569;
+        }
+
+        @media(max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+    <div class="card">
+
+
+        <!-- TITLE -->
+
+        <div class="title">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-reply"></i>
+
+            </div>
+
+            <h1>Reply to Complaint</h1>
+
+            <p>Send a response to the customer</p>
+
+        </div>
+
+
+
+        <!-- CUSTOMER INFORMATION -->
+
+        <div class="customer-info">
+
+            <h3>
+                <i class="fa-solid fa-user"></i>
+                Customer Information
+            </h3>
+
+
+            <div class="info-row">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>
+                    {{data.CUSTOMER.name}}
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <span>
+                    {{data.CUSTOMER.email}}
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ORIGINAL COMPLAINT -->
+
+        <div class="complaint">
+
+            <div class="complaint-title">
+
+                <i class="fa-solid fa-comment"></i>
+
+                Customer Complaint
+
+            </div>
+
+            {{data.complaints}}
+
+        </div>
+
+
+
+        <!-- REPLY FORM -->
+
+        <form method="POST"
+              action="/myapp/replay_post/">
+
+            {% csrf_token %}
+<input type="hidden" value="{{data.id}}" name="cid"/>
+
+            <label for="reply">
+
+                <i class="fa-solid fa-pen"></i>
+
+                Your Reply
+
+            </label>
+
+
+            <textarea
+                id="reply"
+                name="replys"
+                placeholder="Write your response to the customer..."
+                required></textarea>
+
+
+
+            <div class="buttons">
+
+                <a href="/myapp/view_complaints/"
+                   class="cancel">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="send">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Send Reply
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

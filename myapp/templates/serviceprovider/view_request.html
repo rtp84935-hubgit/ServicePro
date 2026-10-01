@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Requests</title>
+
+    <link rel="stylesheet" href="/static/view_request.css">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>{% extends 'serviceprovider/provider_home.html' %}
+{% block body %}
+<body>
+
+<div class="board">
+
+    <header class="board-head">
+        <p class="board-eyebrow">Dispatch Board</p>
+        <h1><i class="fa-solid fa-clipboard-list"></i> Service Requests</h1>
+        <p class="board-sub">Every job you've been sent, in one queue.</p>
+    </header>
+
+    <div class="tickets-grid">
+
+        {% for i in data %}
+
+        <article class="ticket">
+
+            <div class="ticket-stub">
+                <span class="stub-no">No.</span>
+                <span class="stub-num">{{ forloop.counter|stringformat:"03d" }}</span>
+            </div>
+
+            <div class="ticket-body">
+
+                <div class="ticket-row ticket-row--head">
+                    <div>
+                        <p class="field-label"><i class="fa-solid fa-user"></i> Customer</p>
+                        <p class="field-value field-value--lg">{{i.CUSTOMER.name}}</p>
+                    </div>
+
+                    <div class="status-stamp status-stamp--{{ i.status }}">
+                        {% if i.status == 'pending' %}
+                            Pending
+                        {% elif i.status == 'accepted' %}
+                            Accepted
+                        {% elif i.status == 'completed' %}
+                            Completed
+                        {% elif i.status == 'rejected' %}
+                            Rejected
+                        {% elif i.status == 'paid' %}
+                            Paid
+                        {% else %}
+                            Processing
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="ticket-details">
+
+                    <div class="detail">
+                        <p class="field-label"><i class="fa-solid fa-triangle-exclamation"></i> Problem</p>
+                        <p class="field-value">{{i.Problem}}</p>
+                    </div>
+
+                    <div class="detail">
+                        <p class="field-label"><i class="fa-solid fa-phone"></i> Phone</p>
+                        <p class="field-value field-value--mono">{{i.CUSTOMER.phone}}</p>
+                    </div>
+
+                    <div class="detail">
+                        <p class="field-label"><i class="fa-solid fa-location-dot"></i> Location</p>
+                        <p class="field-value">{{i.place}}<br>{{i.post}} &ndash; {{i.pin}}</p>
+                    </div>
+
+                    <div class="detail">
+                        <p class="field-label"><i class="fa-solid fa-crosshairs"></i> Coordinates</p>
+                        <p class="field-value field-value--mono">{{i.latitude}}, {{i.longitude}}</p>
+                    </div>
+
+                    <div class="detail">
+                        <p class="field-label"><i class="fa-regular fa-clock"></i> Date &amp; Time</p>
+                        <p class="field-value">{{i.date}}</p>
+                    </div>
+
+                </div>
+
+                <div class="ticket-perf"></div>
+
+                <div class="ticket-action">
+
+                {% if i.status == "pending" %}
+
+                    <a href="/myapp/accept_request/{{i.id}}" class="btn btn--accept">
+                        <i class="fa-solid fa-check"></i> Accept
+                    </a>
+
+                    <a href="/myapp/reject_request/{{i.id}}" class="btn btn--reject">
+                        <i class="fa-solid fa-xmark"></i> Reject
+                    </a>
+
+                {% elif i.status == "accepted" %}
+
+                    <p class="hint-note">Mark this job complete once you're done on-site.</p>
+
+                    <a href="/myapp/completed/{{i.id}}" class="btn btn--complete">
+                        <i class="fa-solid fa-circle-check"></i> Mark Completed
+                    </a>
+
+                {% elif i.status == 'rejected' %}
+
+                    <p class="closed-note"><i class="fa-solid fa-ban"></i> This request was rejected.</p>
+
+                {% elif i.status == 'completed' %}
+
+                    <form action="/myapp/add_payment_amount_post/{{i.id}}" method="post" class="payment-form">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="amount" value="{{ i.id }}">
+
+                        <div class="input-box">
+                            <label for="amount-{{ i.id }}">
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+                                Payment Amount
+                            </label>
+
+                            <input
+                                type="number"
+                                name="amount"
+                                id="amount-{{ i.id }}"
+                                min="0"
+                                placeholder="Enter service charge"
+                                required>
+                        </div>
+
+                        <button type="submit" class="btn btn--payment">
+                            <i class="fa-solid fa-wallet"></i>
+                            Update Amount
+                        </button>
+                    </form>
+
+                {% elif i.status == 'paid' %}
+
+                    <p class="closed-note closed-note--paid"><i class="fa-solid fa-circle-check"></i> Paid in full.</p>
+
+                {% elif i.status == 'payment' %}
+
+                    <p class="hint-note hint-note--waiting"><i class="fa-solid fa-hourglass-half"></i> Payment request sent to customer.</p>
+
+                {% endif %}
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% empty %}
+
+        <div class="empty-state">
+            <i class="fa-regular fa-folder-open"></i>
+            <p>No requests on the board yet</p>
+            <span>New jobs will show up here as soon as customers send them in.</span>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<style>
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root{
+        --ink:#0d1424;
+        --panel:#141d33;
+        --panel-raised:#182342;
+        --line:rgba(255,255,255,0.09);
+        --text:#eceef6;
+        --text-muted:#8b93ab;
+
+        --amber:#e9a23b;
+        --amber-dim:rgba(233,162,59,0.14);
+        --teal:#49b3a6;
+        --teal-dim:rgba(73,179,166,0.14);
+        --red:#e0605f;
+        --red-dim:rgba(224,96,95,0.14);
+        --blue:#5b8dbe;
+        --blue-dim:rgba(91,141,190,0.14);
+    }
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        background:
+            radial-gradient(1100px 480px at 12% -10%, rgba(91,141,190,0.14), transparent),
+            radial-gradient(900px 420px at 100% 0%, rgba(233,162,59,0.10), transparent),
+            var(--ink);
+        color:var(--text);
+        font-family:'Inter',sans-serif;
+        padding:48px 40px 80px;
+    }
+
+    /* Content sits to the right of the sidebar navbar rather than being
+       centered on the full viewport. Adjust --nav-width to match the
+       actual navbar width from provider_home.html if it differs. */
+    :root{
+        --nav-width:260px;
+    }
+
+    .board{
+        width:100%;
+        max-width:1180px;
+        margin-left:calc(var(--nav-width) + 40px);
+        margin-right:0;
+    }
+
+    @media (max-width:900px){
+        .board{
+            margin-left:0;
+        }
+    }
+
+    .board-head{
+        text-align:center;
+        margin-bottom:44px;
+    }
+
+    .board-eyebrow{
+        font-family:'JetBrains Mono',monospace;
+        font-size:12px;
+        letter-spacing:0.28em;
+        text-transform:uppercase;
+        color:var(--amber);
+        margin-bottom:10px;
+    }
+
+    .board-head h1{
+        font-family:'Space Grotesk',sans-serif;
+        font-weight:700;
+        font-size:clamp(28px,4vw,40px);
+        letter-spacing:-0.01em;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:14px;
+    }
+
+    .board-head h1 i{
+        color:var(--blue);
+        font-size:0.8em;
+    }
+
+    .board-sub{
+        color:var(--text-muted);
+        margin-top:10px;
+        font-size:15px;
+    }
+
+    .tickets-grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
+        gap:26px;
+    }
+
+    .ticket{
+        display:grid;
+        grid-template-columns:64px 1fr;
+        background:var(--panel);
+        border:1px solid var(--line);
+        border-radius:16px;
+        overflow:hidden;
+        box-shadow:0 18px 40px -22px rgba(0,0,0,0.6);
+        transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+
+    .ticket:hover{
+        transform:translateY(-3px);
+        border-color:rgba(233,162,59,0.35);
+        box-shadow:0 22px 50px -20px rgba(0,0,0,0.7);
+    }
+
+    .ticket-stub{
+        background:var(--panel-raised);
+        border-right:2px dashed var(--line);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:6px;
+        padding:18px 6px;
+    }
+
+    .stub-no{
+        font-family:'JetBrains Mono',monospace;
+        font-size:10px;
+        letter-spacing:0.14em;
+        color:var(--text-muted);
+        text-transform:uppercase;
+    }
+
+    .stub-num{
+        font-family:'JetBrains Mono',monospace;
+        font-size:17px;
+        font-weight:500;
+        color:var(--amber);
+        writing-mode:vertical-rl;
+        transform:rotate(180deg);
+        letter-spacing:0.06em;
+    }
+
+    .ticket-body{
+        padding:22px 24px 24px;
+        display:flex;
+        flex-direction:column;
+        gap:18px;
+    }
+
+    .ticket-row--head{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap:16px;
+    }
+
+    .field-label{
+        font-size:11px;
+        letter-spacing:0.09em;
+        text-transform:uppercase;
+        color:var(--text-muted);
+        display:flex;
+        align-items:center;
+        gap:7px;
+        margin-bottom:5px;
+    }
+
+    .field-label i{
+        color:var(--blue);
+        font-size:11px;
+        width:12px;
+    }
+
+    .field-value{
+        font-size:15px;
+        color:var(--text);
+        line-height:1.45;
+    }
+
+    .field-value--lg{
+        font-family:'Space Grotesk',sans-serif;
+        font-size:19px;
+        font-weight:600;
+    }
+
+    .field-value--mono{
+        font-family:'JetBrains Mono',monospace;
+        font-size:13.5px;
+        color:#cbd2e6;
+    }
+
+    .ticket-details{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:16px 20px;
+    }
+
+    .detail:nth-child(1){
+        grid-column:1 / -1;
+    }
+
+    .status-stamp{
+        flex-shrink:0;
+        font-family:'Space Grotesk',sans-serif;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:0.12em;
+        text-transform:uppercase;
+        padding:8px 14px;
+        border-radius:8px;
+        border:2px double currentColor;
+        transform:rotate(-2deg);
+        white-space:nowrap;
+    }
+
+    .status-stamp--pending{ color:var(--amber); background:var(--amber-dim); }
+    .status-stamp--accepted{ color:var(--teal); background:var(--teal-dim); }
+    .status-stamp--completed{ color:var(--blue); background:var(--blue-dim); }
+    .status-stamp--rejected{ color:var(--red); background:var(--red-dim); }
+    .status-stamp--paid{ color:var(--teal); background:var(--teal-dim); }
+    .status-stamp--processing{ color:var(--amber); background:var(--amber-dim); }
+
+    .ticket-perf{
+        border-top:2px dashed var(--line);
+        margin:2px 0;
+    }
+
+    .ticket-action{
+        display:flex;
+        flex-wrap:wrap;
+        align-items:center;
+        gap:10px;
+    }
+
+    .btn{
+        display:inline-flex;
+        align-items:center;
+        gap:9px;
+        padding:10px 20px;
+        border-radius:10px;
+        text-decoration:none;
+        font-size:14px;
+        font-weight:600;
+        border:none;
+        cursor:pointer;
+        transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .btn:active{
+        transform:scale(0.97);
+    }
+
+    .btn--accept{
+        background:var(--teal);
+        color:#06231f;
+    }
+    .btn--accept:hover{
+        box-shadow:0 8px 20px -8px rgba(73,179,166,0.6);
+        transform:translateY(-1px);
+    }
+
+    .btn--reject{
+        background:transparent;
+        color:var(--red);
+        border:1.5px solid var(--red);
+    }
+    .btn--reject:hover{
+        background:var(--red-dim);
+    }
+
+    .btn--complete{
+        background:var(--blue);
+        color:#08182a;
+    }
+    .btn--complete:hover{
+        box-shadow:0 8px 20px -8px rgba(91,141,190,0.6);
+        transform:translateY(-1px);
+    }
+
+    .btn--payment{
+        width:100%;
+        justify-content:center;
+        background:linear-gradient(135deg,var(--amber),#f4c46a);
+        color:#2b1d05;
+    }
+    .btn--payment:hover{
+        box-shadow:0 8px 20px -8px rgba(233,162,59,0.55);
+        transform:translateY(-1px);
+    }
+
+    .hint-note{
+        font-size:13px;
+        color:var(--text-muted);
+        width:100%;
+    }
+
+    .hint-note--waiting{
+        color:var(--amber);
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
+
+    .closed-note{
+        font-size:14px;
+        color:var(--text-muted);
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
+
+    .closed-note--paid{
+        color:var(--teal);
+    }
+
+    .payment-form{
+        width:100%;
+        display:flex;
+        flex-direction:column;
+        gap:14px;
+    }
+
+    .input-box label{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        font-size:13px;
+        font-weight:600;
+        color:var(--text-muted);
+        margin-bottom:8px;
+    }
+
+    .input-box label i{
+        color:var(--amber);
+    }
+
+    .input-box input{
+        width:100%;
+        padding:12px 14px;
+        border:1px solid var(--line);
+        border-radius:10px;
+        background:var(--panel-raised);
+        color:var(--text);
+        font-size:15px;
+        font-family:'JetBrains Mono',monospace;
+        outline:none;
+        transition:border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .input-box input::placeholder{
+        color:var(--text-muted);
+        font-family:'Inter',sans-serif;
+    }
+
+    .input-box input:focus{
+        border-color:var(--amber);
+        box-shadow:0 0 0 3px rgba(233,162,59,0.18);
+    }
+
+    .empty-state{
+        grid-column:1 / -1;
+        text-align:center;
+        padding:70px 20px;
+        border:1.5px dashed var(--line);
+        border-radius:16px;
+        color:var(--text-muted);
+    }
+
+    .empty-state i{
+        font-size:30px;
+        color:var(--blue);
+        margin-bottom:14px;
+        display:block;
+    }
+
+    .empty-state p{
+        font-family:'Space Grotesk',sans-serif;
+        font-size:18px;
+        font-weight:600;
+        color:var(--text);
+        margin-bottom:6px;
+    }
+
+    .empty-state span{
+        font-size:14px;
+    }
+
+    @media (max-width:520px){
+        .ticket{
+            grid-template-columns:1fr;
+        }
+        .ticket-stub{
+            flex-direction:row;
+            border-right:none;
+            border-bottom:2px dashed var(--line);
+            padding:10px 18px;
+        }
+        .stub-num{
+            writing-mode:horizontal-tb;
+            transform:none;
+        }
+        .ticket-details{
+            grid-template-columns:1fr;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        .ticket, .btn{
+            transition:none;
+        }
+    }
+</style>
+
+</body>
+{% endblock %}
+</html>

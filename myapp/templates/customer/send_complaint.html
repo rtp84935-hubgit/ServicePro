@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Complaint</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
+            padding:20px;
+        }
+
+        .container{
+            width:100%;
+            display:flex;
+            justify-content:center;
+        }
+
+        .card{
+            width:500px;
+            background:rgba(255,255,255,.08);
+            backdrop-filter:blur(18px);
+            border:1px solid rgba(255,255,255,.15);
+            border-radius:18px;
+            padding:40px;
+            color:#fff;
+            box-shadow:0 15px 35px rgba(0,0,0,.4);
+        }
+
+        .icon{
+            width:90px;
+            height:90px;
+            border-radius:50%;
+            background:#ef4444;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            margin:0 auto 20px;
+            font-size:38px;
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:10px;
+        }
+
+        .subtitle{
+            text-align:center;
+            color:#cbd5e1;
+            margin-bottom:30px;
+            line-height:24px;
+        }
+
+        .input-box{
+            margin-bottom:20px;
+        }
+
+        .input-box label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:600;
+        }
+
+        textarea{
+            width:100%;
+            height:180px;
+            resize:none;
+            border:none;
+            outline:none;
+            border-radius:10px;
+            background:#1f2937;
+            color:#fff;
+            padding:15px;
+            font-size:16px;
+        }
+
+        textarea::placeholder{
+            color:#9ca3af;
+        }
+
+        button{
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:10px;
+            background:#2563eb;
+            color:#fff;
+            font-size:17px;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        button:hover{
+            background:#1d4ed8;
+            transform:translateY(-2px);
+        }
+
+        .back{
+            display:block;
+            text-align:center;
+            margin-top:20px;
+            color:#60a5fa;
+            text-decoration:none;
+        }
+
+        .back:hover{
+            color:white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="icon">
+            <i class="fas fa-triangle-exclamation"></i>
+        </div>
+
+        <h2>Send Complaint</h2>
+
+        <p class="subtitle">
+            Describe your issue clearly. Our team will review your complaint as soon as possible.
+        </p>
+
+        <form action="/myapp/send_complaint_post/" method="post">
+
+            {% csrf_token %}
+<input type="hidden" value="{{data.id}}" name="rid"/>
+            <div class="input-box">
+                <label>Complaint</label>
+                <textarea name="complaints"
+                          placeholder="Write your complaint here..."
+                          required></textarea>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-paper-plane"></i>
+                Submit Complaint
+            </button>
+
+        </form>
+
+        <a href="/myapp/customer_home/" class="back">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

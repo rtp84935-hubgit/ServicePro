@@ -1,0 +1,813 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Registration</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            min-height: 100vh;
+            background: #020617;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            overflow-x: hidden;
+        }
+
+        /* Background effects */
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: #2563eb;
+            border-radius: 50%;
+            filter: blur(180px);
+            opacity: .18;
+            top: -220px;
+            left: -200px;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            background: #06b6d4;
+            border-radius: 50%;
+            filter: blur(180px);
+            opacity: .13;
+            bottom: -200px;
+            right: -180px;
+            pointer-events: none;
+        }
+
+        /* Main container */
+
+        .container {
+            width: 1150px;
+            max-width: 100%;
+            min-height: 720px;
+            display: flex;
+            background: #0f172a;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,.55);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .left {
+            width: 43%;
+            padding: 55px;
+            background: linear-gradient(
+                145deg,
+                #111827,
+                #172554,
+                #0f172a
+            );
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border: 1px solid rgba(59,130,246,.15);
+            border-radius: 50%;
+            top: -130px;
+            left: -120px;
+        }
+
+        .left::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border: 1px solid rgba(6,182,212,.12);
+            border-radius: 50%;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .content {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg,#2563eb,#06b6d4);
+            color: white;
+            font-size: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(37,99,235,.3);
+        }
+
+        .content h1 {
+            color: white;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .content h2 {
+            color: #60a5fa;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .content > p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.9;
+            margin-bottom: 35px;
+        }
+
+        /* Features */
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .feature {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 17px;
+            border-radius: 13px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.06);
+            transition: .3s;
+        }
+
+        .feature:hover {
+            transform: translateX(7px);
+            background: rgba(37,99,235,.12);
+            border-color: rgba(59,130,246,.3);
+        }
+
+        .feature i {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #60a5fa;
+            background: rgba(37,99,235,.15);
+        }
+
+        .feature span {
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .right {
+            width: 57%;
+            padding: 45px;
+            background: #020617;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-box {
+            width: 100%;
+            max-width: 600px;
+            padding: 38px;
+            background: rgba(15,23,42,.95);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header h2 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .register-header p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .row {
+            width: 100%;
+            display: flex;
+            gap: 16px;
+            margin-bottom: 17px;
+        }
+
+        .input-box {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 16px;
+            top: 18px;
+            color: #3b82f6;
+            font-size: 15px;
+            z-index: 2;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 53px;
+            padding: 0 15px 0 45px;
+            border-radius: 11px;
+            border: 1px solid #334155;
+            outline: none;
+            background: #111827;
+            color: white;
+            font-size: 13px;
+            transition: .3s;
+        }
+
+        .input-box input::placeholder {
+            color: #64748b;
+        }
+
+        .input-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.1);
+        }
+
+        .input-box input:valid {
+            border-color: #334155;
+        }
+
+        /* Error messages */
+
+        .error-message {
+            display: block;
+            min-height: 17px;
+            margin-top: 5px;
+            padding-left: 3px;
+            color: #f87171;
+            font-size: 11px;
+        }
+
+        .success-message {
+            display: block;
+            min-height: 17px;
+            margin-top: 5px;
+            padding-left: 3px;
+            color: #4ade80;
+            font-size: 11px;
+        }
+
+        /* Date */
+
+        input[type="date"] {
+            color-scheme: dark;
+        }
+
+        /* File input */
+
+        .file-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-box label {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .file-box label i {
+            position: static;
+            margin-right: 6px;
+            color: #3b82f6;
+        }
+
+        .file-box input {
+            padding: 8px;
+            height: 53px;
+            color: #94a3b8;
+        }
+
+        .file-box input::file-selector-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 9px 13px;
+            border-radius: 7px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        /* Password */
+
+        .full {
+            width: 100%;
+            margin-bottom: 17px;
+        }
+
+        /* Button */
+
+        .register-btn {
+            width: 100%;
+            height: 53px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #3b82f6,
+                #06b6d4
+            );
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 10px 25px rgba(37,99,235,.2);
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(37,99,235,.3);
+        }
+
+        .register-btn i {
+            margin-right: 7px;
+        }
+
+        /* Login */
+
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .login-link a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .login-link a:hover {
+            color: #93c5fd;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width: 950px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .left,
+            .right {
+                width: 100%;
+            }
+
+            .left {
+                padding: 40px;
+            }
+
+            .right {
+                padding: 35px;
+            }
+        }
+
+        @media(max-width: 650px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .left {
+                padding: 35px 25px;
+            }
+
+            .right {
+                padding: 20px;
+            }
+
+            .register-box {
+                padding: 25px 20px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 0;
+                margin-bottom: 0;
+            }
+
+            .input-box {
+                margin-bottom: 15px;
+            }
+
+            .content h1 {
+                font-size: 38px;
+            }
+
+            .content h2 {
+                font-size: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- =========================
+         LEFT SIDE
+    ========================= -->
+
+    <div class="left">
+
+        <div class="content">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+
+            <h1>ServiceHub</h1>
+
+            <h2>Create Customer Account</h2>
+
+            <p>
+                Join thousands of customers and book trusted professionals
+                for plumbing, electrical work, carpentry, painting,
+                cleaning and much more.
+            </p>
+
+            <div class="features">
+
+                <div class="feature">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Verified Service Providers</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Easy Online Booking</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Secure Payments</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>24×7 Customer Support</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RIGHT SIDE
+    ========================= -->
+
+    <div class="right">
+
+        <div class="register-box">
+
+            <div class="register-header">
+
+                <h2>Create Account</h2>
+                {% if messages %}
+                {% for i in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{i}}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+                <p>
+                    Enter your details to get started
+                </p>
+
+            </div>
+
+
+            <form
+                action="/myapp/customersignup_post/"
+                method="post"
+                enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+                <!-- NAME + EMAIL -->
+
+                <div class="row">
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        <input
+                            type="text"
+                            value="{{ data.name }}"
+                            name="name"
+                            pattern="[A-Za-z][A-Za-z '\-]*"
+                            title="Enter a valid name"
+                            placeholder="Full Name"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        <input
+                            type="text"
+                            name="email"
+                            id="email"
+                            placeholder="Email Address"
+                            
+                            title="enter a valid email"
+                            required>
+                           
+
+                        <small id="emailError"
+                               class="error-message"></small>
+
+                        <small id="pid"
+                               class="error-message"></small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PLACE + PHONE -->
+
+                <div class="row">
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <input
+                            type="text"
+                            name="place"
+                            placeholder="Place"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        <input
+                            type="number"
+                            name="phone"
+                            placeholder="Phone Number"
+                            pattern="[8976][0-9]{9}"
+                            required>
+                      
+                    </div>
+
+                </div>
+
+
+                <!-- DOB + PHOTO -->
+
+                <div class="row">
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-calendar"></i>
+
+                                           <input 
+    type="date"
+    name="dob"
+    id="dob"
+    max="2008-08-15"
+    required
+>
+                        
+                    </div>
+
+
+                    <div class="input-box file-box">
+
+                        <label>
+                            <i class="fa-solid fa-image"></i>
+                            Upload Photo
+                        </label>
+
+                        <input
+                            type="file"
+                            id="photo"
+                            name="photo"
+                            accept="image/*"
+                            required
+                            title="photo uplaod cheyy machuuu😎">
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="row">
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            placeholder="Confirm Password"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="register-btn">
+
+                    <i class="fa-solid fa-user-plus"></i>
+                    Create Account
+
+                </button>
+
+            </form>
+
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="#">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     EMAIL VALIDATION
+========================= -->
+
+
+
+
+<!-- =========================
+     AJAX EMAIL CHECK
+========================= -->
+
+<script>
+
+$(document).ready(function () {
+
+    $('#email').keyup(function () {
+
+        let email = $('#email').val();
+
+        $.ajax({
+
+            url: '/myapp/checkusername/',
+
+            method: 'GET',
+
+            data: {
+                'email': email
+            },
+
+            success: function (response) {
+
+                if (response.status == 'ok') {
+
+                    $('#pid').html(
+                        'Email already exists'
+                    );
+
+                } else {
+
+                    $('#pid').html('');
+
+                }
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
+

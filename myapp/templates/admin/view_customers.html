@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Customers</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 70px;
+            background: #111827;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.4);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+
+            background: #1e293b;
+
+            padding: 10px 18px;
+            border-radius: 8px;
+
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #334155;
+        }
+
+
+        /* MAIN */
+
+        .container {
+            padding: 40px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .heading h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #94a3b8;
+        }
+
+
+        /* CUSTOMER GRID */
+
+        .customer-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(320px, 1fr));
+
+            gap: 25px;
+        }
+
+
+        /* CARD */
+
+        .customer-card {
+            background: #1e293b;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.3);
+
+            transition: 0.3s;
+        }
+
+        .customer-card:hover {
+            transform: translateY(-6px);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,0.5);
+        }
+
+
+        /* PROFILE */
+
+        .profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 100px;
+            height: 100px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 4px solid #38bdf8;
+
+            margin-bottom: 12px;
+        }
+
+        .profile h2 {
+            font-size: 22px;
+        }
+
+
+        /* DETAILS */
+
+        .details {
+            border-top: 1px solid #334155;
+
+            padding-top: 18px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+
+            margin: 14px 0;
+
+            color: #cbd5e1;
+        }
+
+        .detail-row i {
+            width: 30px;
+
+            color: #38bdf8;
+        }
+
+        .detail-row span {
+            color: white;
+        }
+
+
+        /* VIEW BUTTON */
+
+        .view-btn {
+            display: block;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            background: #0ea5e9;
+
+            color: white;
+
+            padding: 11px;
+
+            border-radius: 8px;
+
+            margin-top: 20px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #0284c7;
+        }
+
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+
+            padding: 70px 20px;
+
+            color: #94a3b8;
+        }
+
+        .empty i {
+            font-size: 55px;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media(max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+            .heading h1 {
+                font-size: 26px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-user-shield"></i>
+
+            Admin Panel
+
+        </div>
+
+
+        <a href="/myapp/admin_home/"
+           class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="container">
+
+
+        <div class="heading">
+
+            <h1>Registered Customers</h1>
+
+            <p>
+                View all customers registered on the platform
+            </p>
+
+        </div>
+
+
+
+        <div class="customer-grid">
+
+
+            {% for i in data %}
+
+
+            <div class="customer-card">
+
+
+                <!-- PROFILE -->
+
+                <div class="profile">
+
+                    <img src="{{i.photo.url}}"
+                         alt="Customer">
+
+                    <h2>
+                        {{i.name}}
+                    </h2>
+
+                </div>
+
+
+
+                <!-- DETAILS -->
+
+                <div class="details">
+
+
+                    <div class="detail-row">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        <span>
+                            {{i.email}}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        <span>
+                            {{i.phone}}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span>
+                            {{i.place}}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <i class="fa-solid fa-calendar"></i>
+
+                        <span>
+                            {{i.dob}}
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- VIEW BUTTON -->
+
+                <!-- <a href="/myapp/view_customer/{{i.id}}/"
+                   class="view-btn">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                    View Details
+
+                </a> -->
+
+
+            </div>
+
+
+            {% empty %}
+
+
+            <div class="empty">
+
+                <i class="fa-solid fa-users-slash"></i>
+
+                <h2>
+                    No Customers Found
+                </h2>
+
+                <p>
+                    There are currently no registered customers.
+                </p>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,543 @@
+{% extends 'customer/customer_home.html' %}
+
+{% block body %}
+
+<div id="serviceProvidersRoot">
+
+  <div class="sp-container">
+
+    <!-- ================= HEADER ================= -->
+    <div class="sp-header">
+
+      <div class="sp-header-text">
+        <p class="sp-eyebrow">Find Help</p>
+        <h1><i class="fa-solid fa-users-gear"></i> Service Providers</h1>
+      </div>
+
+      <div class="sp-search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" class="sp-search-box" placeholder="Search provider..." autocomplete="off">
+      </div>
+
+    </div>
+
+    <!-- ================= FILTERS ================= -->
+    <div class="sp-filters">
+      <button type="button" class="sp-filter-btn is-active" data-service="all">
+        <i class="fa-solid fa-layer-group"></i><span>All</span>
+      </button>
+      <button type="button" class="sp-filter-btn" data-service="electrician">
+        <i class="fa-solid fa-bolt"></i><span>Electrician</span>
+      </button>
+      <button type="button" class="sp-filter-btn" data-service="plumber">
+        <i class="fa-solid fa-faucet"></i><span>Plumber</span>
+      </button>
+      <button type="button" class="sp-filter-btn" data-service="painter">
+        <i class="fa-solid fa-paint-roller"></i><span>Painter</span>
+      </button>
+      <button type="button" class="sp-filter-btn" data-service="carpenter">
+        <i class="fa-solid fa-hammer"></i><span>Carpenter</span>
+      </button>
+      <button type="button" class="sp-filter-btn" data-service="mechanic">
+        <i class="fa-solid fa-wrench"></i><span>Mechanic</span>
+      </button>
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="sp-table-wrap">
+      <table class="sp-table">
+        <thead>
+          <tr>
+            <th>Sl No</th>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Service</th>
+            <th>Place</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in data %}
+          <tr data-service="{{ i.servicetype|lower }}" data-name="{{ i.name|lower }}">
+            <td class="sp-cell-index">{{ forloop.counter }}</td>
+            <td>
+              {% if i.photo %}<img src="{{ i.photo.url }}" alt="{{ i.name }}">{% endif %}
+            </td>
+            <td class="sp-cell-name">{{ i.name }}</td>
+            <td><span class="sp-badge">{{ i.servicetype }}</span></td>
+            <td>{{ i.place }}</td>
+            <td class="sp-cell-mono">{{ i.phone }}</td>
+            <td class="sp-cell-mono">{{ i.email }}</td>
+            <td>
+              <a href="/myapp/send_request/{{ i.id }}" class="sp-view-btn">
+                Send Request <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="8" class="sp-empty-table">No service providers available.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="sp-no-results" style="display:none;">
+        <i class="fa-regular fa-face-frown"></i>
+        <p>No providers found</p>
+        <span>Try a different search term or filter.</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+#serviceProvidersRoot {
+  --sp-bg: #030b18;
+  --sp-panel: #0c1a30;
+  --sp-panel-2: #0f2340;
+  --sp-line: rgba(255,255,255,.08);
+  --sp-text: #eaf1fb;
+  --sp-muted: #84a0c4;
+  --sp-blue: #3b82f6;
+  --sp-blue-deep: #1d4ed8;
+  --sp-blue-soft: rgba(59,130,246,.16);
+  --sp-mint: #22d3ee;
+  font-family: "Poppins", sans-serif;
+}
+
+#serviceProvidersRoot,
+#serviceProvidersRoot * {
+  box-sizing: border-box;
+}
+
+#serviceProvidersRoot {
+  background:
+    radial-gradient(700px 420px at 8% -10%, rgba(59,130,246,.16), transparent),
+    radial-gradient(600px 380px at 100% 0%, rgba(34,211,238,.10), transparent),
+    var(--sp-bg);
+  padding: 40px;
+  min-height: 100vh;
+}
+
+.sp-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  background: linear-gradient(160deg, var(--sp-panel-2), var(--sp-panel));
+  padding: 34px;
+  border-radius: 22px;
+  box-shadow: 0 20px 45px rgba(0,0,0,.45);
+  border: 1px solid var(--sp-line);
+  color: var(--sp-text);
+}
+
+/* ---------- HEADER ---------- */
+
+.sp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.sp-eyebrow {
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--sp-mint);
+  margin: 0 0 8px 0;
+}
+
+.sp-header h1 {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: -.01em;
+}
+
+.sp-header h1 i {
+  color: var(--sp-blue);
+}
+
+/* ---------- SEARCH ---------- */
+
+.sp-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sp-search-wrap i {
+  position: absolute;
+  left: 16px;
+  color: var(--sp-muted);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.sp-search-box {
+  width: 280px;
+  height: 46px;
+  padding: 0 16px 0 42px;
+  border-radius: 30px;
+  background: var(--sp-panel);
+  color: var(--sp-text);
+  border: 1px solid var(--sp-line);
+  outline: none;
+  transition: .25s;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+}
+
+.sp-search-box:focus {
+  border-color: var(--sp-blue);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+}
+
+.sp-search-box::placeholder {
+  color: var(--sp-muted);
+}
+
+/* ---------- FILTER BUTTONS ---------- */
+
+.sp-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.sp-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--sp-panel);
+  color: var(--sp-muted);
+  border: 1px solid var(--sp-line);
+  padding: 10px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  transition: background .2s, color .2s, transform .2s, box-shadow .2s, border-color .2s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.sp-filter-btn i,
+.sp-filter-btn span {
+  pointer-events: none;
+}
+
+.sp-filter-btn:hover,
+.sp-filter-btn:focus-visible {
+  background: var(--sp-blue-soft);
+  color: var(--sp-text);
+  transform: translateY(-2px);
+  border-color: rgba(59,130,246,.35);
+}
+
+.sp-filter-btn:focus-visible {
+  outline: 2px solid var(--sp-blue);
+  outline-offset: 2px;
+}
+
+.sp-filter-btn:active {
+  transform: translateY(0);
+}
+
+.sp-filter-btn.is-active {
+  background: linear-gradient(135deg, var(--sp-blue-deep), var(--sp-blue));
+  color: #eaf1fb;
+  border-color: transparent;
+  box-shadow: 0 8px 18px rgba(59,130,246,.35);
+}
+
+.sp-filter-btn.is-active:hover,
+.sp-filter-btn.is-active:focus-visible {
+  background: linear-gradient(135deg, var(--sp-blue), var(--sp-mint));
+  color: #eaf1fb;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(59,130,246,.45);
+}
+
+/* ---------- TABLE ---------- */
+
+.sp-table-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--sp-line);
+}
+
+.sp-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sp-table th {
+  background: var(--sp-panel-2);
+  color: var(--sp-mint);
+  font-family: 'Sora', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: 16px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--sp-line);
+}
+
+.sp-table td {
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--sp-line);
+  color: var(--sp-text);
+  font-size: 14.5px;
+}
+
+.sp-table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,.02);
+}
+
+.sp-table tbody tr:hover {
+  background: var(--sp-blue-soft);
+}
+
+.sp-table img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--sp-blue);
+}
+
+.sp-cell-index {
+  color: var(--sp-muted);
+}
+
+.sp-cell-name {
+  font-weight: 600;
+}
+
+.sp-cell-mono {
+  color: var(--sp-muted);
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.sp-badge {
+  display: inline-block;
+  background: var(--sp-blue-soft);
+  color: var(--sp-mint);
+  border: 1px solid rgba(59,130,246,.35);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.sp-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--sp-blue), var(--sp-blue-deep));
+  color: #eaf1fb;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.sp-view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(59,130,246,.4);
+}
+
+.sp-no-results {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--sp-muted);
+}
+
+.sp-no-results i {
+  font-size: 26px;
+  color: var(--sp-mint);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.sp-no-results p {
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--sp-text);
+  margin: 0 0 4px 0;
+}
+
+.sp-no-results span {
+  font-size: 13.5px;
+}
+
+.sp-empty-table {
+  text-align: center;
+  padding: 40px !important;
+  color: var(--sp-muted) !important;
+}
+
+#serviceProvidersRoot ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#serviceProvidersRoot ::-webkit-scrollbar-track {
+  background: var(--sp-bg);
+}
+
+#serviceProvidersRoot ::-webkit-scrollbar-thumb {
+  background: var(--sp-blue);
+  border-radius: 20px;
+}
+
+#serviceProvidersRoot ::-webkit-scrollbar-thumb:hover {
+  background: var(--sp-mint);
+}
+
+@media (max-width: 1000px) {
+  .sp-table {
+    min-width: 950px;
+  }
+}
+
+@media (max-width: 700px) {
+  #serviceProvidersRoot {
+    padding: 16px;
+  }
+  .sp-container {
+    padding: 22px;
+    border-radius: 18px;
+  }
+  .sp-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .sp-search-box {
+    width: 100%;
+  }
+  .sp-search-wrap {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-filter-btn,
+  .sp-view-btn {
+    transition: none;
+  }
+}
+
+</style>
+
+
+<script>
+(function () {
+
+  function init() {
+
+    var root = document.getElementById("serviceProvidersRoot");
+    if (!root) { return; }
+
+    var searchBox   = root.querySelector(".sp-search-box");
+    var filterBtns  = root.querySelectorAll(".sp-filter-btn");
+    var rows        = root.querySelectorAll(".sp-table tbody tr[data-service]");
+    var noResults   = root.querySelector(".sp-no-results");
+
+    if (!searchBox || !noResults || filterBtns.length === 0) { return; }
+
+    var activeService = "all";
+
+    function norm(str) {
+      return (str || "")
+        .toString()
+        .replace(/\u00A0/g, " ")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ");
+    }
+
+    function setActiveButton(clicked) {
+      for (var i = 0; i < filterBtns.length; i++) {
+        filterBtns[i].classList.remove("is-active");
+      }
+      clicked.classList.add("is-active");
+    }
+
+    function applyFilter() {
+
+      var term = norm(searchBox.value);
+      var visibleCount = 0;
+
+      rows.forEach(function (row) {
+
+        var rowService = norm(row.getAttribute("data-service"));
+        var rowName    = norm(row.getAttribute("data-name"));
+
+        var matchesService = (activeService === "all") || (rowService === activeService);
+        var matchesSearch  = (term === "") || rowName.indexOf(term) !== -1 || rowService.indexOf(term) !== -1;
+
+        if (matchesService && matchesSearch) {
+          row.style.display = "";
+          visibleCount++;
+        } else {
+          row.style.display = "none";
+        }
+
+      });
+
+      noResults.style.display = visibleCount === 0 ? "block" : "none";
+
+    }
+
+    for (var i = 0; i < filterBtns.length; i++) {
+      filterBtns[i].addEventListener("click", function (event) {
+        activeService = norm(event.currentTarget.getAttribute("data-service"));
+        setActiveButton(event.currentTarget);
+        applyFilter();
+      });
+    }
+
+    searchBox.addEventListener("input", applyFilter);
+
+    applyFilter();
+
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
+{% endblock %}

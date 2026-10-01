@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Account</title>
+
+    <link rel="stylesheet" href="select_role.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#030712;
+    overflow:hidden;
+}
+
+body::before{
+    content:"";
+    position:absolute;
+    width:450px;
+    height:450px;
+    background:#2563eb;
+    filter:blur(180px);
+    opacity:.2;
+    top:-120px;
+    left:-120px;
+}
+
+body::after{
+    content:"";
+    position:absolute;
+    width:400px;
+    height:400px;
+    background:#06b6d4;
+    filter:blur(180px);
+    opacity:.15;
+    bottom:-100px;
+    right:-100px;
+}
+
+.container{
+    width:900px;
+    max-width:95%;
+    text-align:center;
+    position:relative;
+    z-index:10;
+}
+
+.container h1{
+    color:white;
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+.container p{
+    color:#94a3b8;
+    margin-bottom:50px;
+}
+
+.cards{
+    display:flex;
+    gap:30px;
+}
+
+.card{
+    flex:1;
+    background:#111827;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:40px;
+    text-decoration:none;
+    transition:.35s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    border-color:#2563eb;
+    box-shadow:0 20px 45px rgba(37,99,235,.25);
+}
+
+.icon{
+    width:90px;
+    height:90px;
+    margin:auto;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:38px;
+    margin-bottom:25px;
+}
+
+.card h2{
+    color:white;
+    margin-bottom:15px;
+}
+
+.card p{
+    color:#94a3b8;
+    line-height:28px;
+    margin-bottom:30px;
+}
+
+.card span{
+    color:#3b82f6;
+    font-weight:600;
+}
+
+@media(max-width:768px){
+
+.cards{
+    flex-direction:column;
+}
+
+.container h1{
+    font-size:34px;
+}
+
+}</style>
+<div class="container">
+
+    <h1>Create Your Account</h1>
+
+    <p>Choose how you want to use ServiceHub.</p>
+
+    <div class="cards">
+
+        <a href="/myapp/customersignup/" class="card">
+
+            <div class="icon">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <h2>Customer</h2>
+
+            <p>
+                Search nearby professionals,
+                book services and manage bookings.
+            </p>
+
+            <span>Continue →</span>
+
+        </a>
+
+        <a href="/myapp/provider_signup/" class="card">
+
+            <div class="icon">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+
+            <h2>Service Provider</h2>
+
+            <p>
+                Offer your services,
+                receive bookings and grow your business.
+            </p>
+
+            <span>Continue →</span>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

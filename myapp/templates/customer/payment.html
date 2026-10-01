@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Payment</title>
+
+    <link rel="stylesheet" href="/static/payment.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<div class="payment-container">
+
+    <div class="payment-card">
+
+        <div class="top">
+            <i class="fa-solid fa-credit-card"></i>
+            <h2>Service Payment</h2>
+            <p>Complete your payment securely.</p>
+        </div>
+
+        <div class="details">
+
+            <div class="row">
+                <span>Worker</span>
+                <strong>{{data.SERVICEPROVIDER.name}}</strong>
+            </div>
+
+            <div class="row">
+                <span>Service</span>
+                <strong>{{data.SERVICEPROVIDER.servicetype}}</strong>
+            </div>
+
+            <div class="row">
+                <span>Location</span>
+                <strong>{{data.place}}</strong>
+            </div>
+
+            <div class="row">
+                <span>Date</span>
+                <strong>{{data.date}}</strong>
+            </div>
+
+            <div class="row total">
+                <span>Total Amount</span>
+                <strong>₹{{amount}}</strong>
+            </div>
+
+        </div>
+
+        <form method="post" action="/myapp/payment_post/">
+            {% csrf_token %}
+
+            <input type="hidden" name="rid" value="{{data.id}}">
+
+            <button class="pay-btn">
+                <i class="fa-solid fa-lock"></i>
+                Pay Now
+            </button>
+        </form>
+
+    </div>
+
+</div>
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.payment-card{
+    width:420px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border-radius:18px;
+    padding:35px;
+    color:white;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+.top{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.top i{
+    font-size:60px;
+    color:#38bdf8;
+    margin-bottom:15px;
+}
+
+.top h2{
+    margin-bottom:8px;
+}
+
+.top p{
+    color:#cbd5e1;
+}
+
+.details{
+    margin-bottom:30px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.total{
+    font-size:22px;
+    color:#38bdf8;
+    font-weight:bold;
+}
+
+.pay-btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#38bdf8;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.pay-btn:hover{
+    background:#0ea5e9;
+    transform:translateY(-2px);
+}
+</style>
+
+</body>
+</html>

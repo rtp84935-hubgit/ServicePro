@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile | ServiceHub</title>
+
+    <link rel="stylesheet" href="customer_edit_profile.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+
+<!-- Navbar -->
+
+<nav class="navbar">
+
+
+    <div class="logo">
+
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+
+        ServiceHub
+
+    </div>
+
+
+
+    <div class="nav-links">
+
+
+        <a href="#">
+
+            <i class="fa-solid fa-house"></i>
+
+            Home
+
+        </a>
+
+
+        <a href="#">
+
+            <i class="fa-solid fa-user"></i>
+
+            Profile
+
+        </a>
+
+
+        <a href="/myapp/logout_page/">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+
+    </div>
+
+
+</nav>
+
+
+
+
+<!-- Edit Profile Container -->
+
+
+<div class="edit-container">
+
+
+    <div class="edit-card">
+
+
+        <h1>
+            Edit Profile
+        </h1>
+
+
+        <p>
+            Update your personal information
+        </p>
+
+
+
+        <form action="/myapp/edit_customer_profile_post/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+
+
+            <!-- Profile Image -->
+
+
+            <div class="profile-upload">
+
+
+                <img src="{{data.photo.url}}" alt="Profile">
+
+
+                <label for="photo">
+
+                    <i class="fa-solid fa-camera"></i>
+
+                </label>
+
+
+               <input 
+  type="file"
+  id="photo"
+  name="photo"
+  accept="image/*">
+
+            </div>
+
+
+
+
+
+            <!-- Name -->
+
+
+            <div class="input-box">
+
+
+                <i class="fa-solid fa-user"></i>
+
+
+                <input 
+    type="text"
+    value="{{ data.name }}"
+    name="name"
+    pattern="[A-Za-z][A-Za-z '\-]*"
+    title="Enter a valid name"
+    placeholder="Full Name"
+    required>
+
+            </div>
+
+
+
+
+            <!-- Email -->
+
+
+            <div class="input-box">
+
+
+                <i class="fa-solid fa-envelope"></i>
+
+
+    <div class="input-box">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                <input
+    type="text"
+    name="email"
+    id="email"
+    value="{{data.email}}"
+    placeholder="Email Address"
+    pattern="[a-z0-9._]{2,25}[@][a-z]{3,10}[.][a-z.]{2,15}"
+    required
+    title="Enter a valid Gmail address ending exactly with @gmail.com">
+
+                        <small id="emailError"
+                               class="error-message"></small>
+
+                        <small id="pid"
+                               class="error-message"></small>
+
+                    </div>
+            </div>
+
+
+
+
+            <!-- Place -->
+
+
+            <div class="input-box">
+
+
+                <i class="fa-solid fa-location-dot"></i>
+
+
+                <input
+                type="text"
+                value="{{data.place}}"
+                name="place"
+                placeholder="Place">
+
+
+            </div>
+
+
+
+
+            <!-- Phone -->
+
+
+            <div class="input-box">
+
+
+                <i class="fa-solid fa-phone"></i>
+
+
+                <input
+                type="text"
+                value="{{data.phone}}"
+                name="phone"
+                pattern="[9876][0-9]{9}"
+                required
+                placeholder="Phone Number">
+
+
+            </div>
+
+
+
+
+            <!-- DOB -->
+
+
+            <div class="input-box">
+
+
+                <i class="fa-solid fa-calendar"></i>
+
+
+                                   <input 
+    type="date"
+    name="dob"
+    id="dob"
+    max="2008-08-15"
+    value="{{data.dob |date:'Y-m-d'}}"
+    required
+>
+                <input type="hidden" name="olddob" value="{{data.dob |date:'Y-m-d'}}"/>
+
+
+            </div>
+
+
+
+
+            <!-- Buttons -->
+
+
+            <div class="buttons">
+
+
+                <a href="/myapp/customer_home/" class="back-btn">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back
+
+                </a>
+
+
+
+                <button class="save-btn">
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Save Changes
+
+                </button>
+
+
+            </div>
+
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+function validateEmail() {
+
+    let email = document.getElementById("email").value;
+
+    let pattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    if (!pattern.test(email)) {
+        alert("Please enter a valid Gmail address ending with @gmail.com");
+        return false;
+    }
+
+    return true;
+}
+</script>
+<style>
+    /*=========================================
+            GOOGLE FONT
+=========================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+/*=========================================
+                RESET
+=========================================*/
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+
+}
+
+
+body{
+
+    min-height:100vh;
+    background:#020617;
+    color:white;
+    position:relative;
+
+}
+
+
+/*=========================================
+        BACKGROUND GLOW
+=========================================*/
+
+
+body::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+
+    height:500px;
+
+    background:#2563eb;
+
+    border-radius:50%;
+
+    filter:blur(180px);
+
+    opacity:.18;
+
+    top:-150px;
+
+    left:-150px;
+
+}
+
+
+body::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+
+    height:450px;
+
+    background:#06b6d4;
+
+    border-radius:50%;
+
+    filter:blur(180px);
+
+    opacity:.15;
+
+    bottom:-150px;
+
+    right:-150px;
+
+}
+
+
+
+/*=========================================
+                NAVBAR
+=========================================*/
+
+
+.navbar{
+
+    height:80px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 60px;
+
+    background:#0f172a;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+
+.logo i{
+
+    color:#3b82f6;
+
+}
+
+
+
+.nav-links{
+
+    display:flex;
+
+    gap:30px;
+
+}
+
+
+.nav-links a{
+
+    text-decoration:none;
+
+    color:#94a3b8;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    transition:.3s;
+
+}
+
+
+
+.nav-links a:hover{
+
+    color:#3b82f6;
+
+}
+
+
+
+
+/*=========================================
+            MAIN CONTAINER
+=========================================*/
+
+
+.edit-container{
+
+    min-height:calc(100vh - 80px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+
+/*=========================================
+            EDIT CARD
+=========================================*/
+
+
+.edit-card{
+
+    width:550px;
+
+    background:#0f172a;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+}
+
+
+
+.edit-card h1{
+
+    text-align:center;
+
+    font-size:34px;
+
+    margin-bottom:8px;
+
+}
+
+
+.edit-card>p{
+
+    text-align:center;
+
+    color:#94a3b8;
+
+    margin-bottom:30px;
+
+}/*=========================================
+        PROFILE IMAGE UPLOAD
+=========================================*/
+
+
+.profile-upload{
+
+    width:130px;
+
+    height:130px;
+
+    margin:0 auto 30px;
+
+    position:relative;
+
+}
+
+
+.profile-upload img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:4px solid #2563eb;
+
+}
+
+
+
+.profile-upload label{
+
+    position:absolute;
+
+    right:0;
+
+    bottom:5px;
+
+    width:40px;
+
+    height:40px;
+
+    background:#2563eb;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+}
+
+
+
+.profile-upload label i{
+
+    color:white;
+
+}
+
+
+.profile-upload input{
+
+    display:none;
+
+}
+
+
+
+/*=========================================
+            INPUT BOX
+=========================================*/
+
+
+.input-box{
+
+    position:relative;
+
+    margin-bottom:18px;
+
+}
+
+
+.input-box i{
+
+    position:absolute;
+
+    left:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#3b82f6;
+
+}
+
+
+
+.input-box input{
+
+    width:100%;
+
+    height:55px;
+
+    background:#111827;
+
+    border:1px solid #334155;
+
+    border-radius:12px;
+
+    outline:none;
+
+    color:white;
+
+    padding-left:50px;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+
+
+.input-box input:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:
+    0 0 15px rgba(37,99,235,.25);
+
+}
+
+
+.input-box input::placeholder{
+
+    color:#64748b;
+
+}
+
+
+
+/*=========================================
+            BUTTONS
+=========================================*/
+
+
+.buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+
+
+.buttons a,
+.buttons button{
+
+    flex:1;
+
+    height:52px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    text-decoration:none;
+
+    transition:.35s;
+
+}
+
+
+
+.back-btn{
+
+    background:#1e293b;
+
+    color:white;
+
+    border:1px solid #334155;
+
+}
+
+
+
+.save-btn{
+
+    border:none;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color:white;
+
+}
+
+
+
+.back-btn:hover{
+
+    background:#2563eb;
+
+    border-color:#2563eb;
+
+    transform:translateY(-3px);
+
+}
+
+
+
+.save-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 15px 30px rgba(37,99,235,.35);
+
+}
+
+
+
+/*=========================================
+            CARD ANIMATION
+=========================================*/
+
+
+.edit-card{
+
+    animation:showCard .8s ease;
+
+}
+
+
+
+@keyframes showCard{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+/*=========================================
+        IMAGE GLOW ANIMATION
+=========================================*/
+
+
+.profile-upload img{
+
+    animation:glow 3s infinite;
+
+}
+
+
+
+@keyframes glow{
+
+    0%{
+
+        box-shadow:
+        0 0 0 0 rgba(37,99,235,.5);
+
+    }
+
+
+    70%{
+
+        box-shadow:
+        0 0 0 20px rgba(37,99,235,0);
+
+    }
+
+
+    100%{
+
+        box-shadow:
+        0 0 0 0 rgba(37,99,235,0);
+
+    }
+
+}
+
+
+
+/*=========================================
+            RESPONSIVE
+=========================================*/
+
+
+@media(max-width:768px){
+
+
+.navbar{
+
+    padding:20px;
+
+    height:auto;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+.nav-links{
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+}
+
+
+
+.edit-container{
+
+    padding:25px;
+
+}
+
+
+
+.edit-card{
+
+    width:100%;
+
+    padding:30px 20px;
+
+}
+
+
+}
+
+
+
+@media(max-width:480px){
+
+
+.edit-card h1{
+
+    font-size:27px;
+
+}
+
+
+.profile-upload{
+
+    width:110px;
+
+    height:110px;
+
+}
+
+
+
+.buttons{
+
+    flex-direction:column;
+
+}
+
+
+
+.buttons a,
+.buttons button{
+
+    width:100%;
+
+}
+
+
+}
+
+
+/*=========================================
+            SCROLLBAR
+=========================================*/
+
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+
+::-webkit-scrollbar-track{
+
+    background:#020617;
+
+}
+
+
+::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+
+    border-radius:20px;
+
+}
+</style>
+</body>
+
+</html>

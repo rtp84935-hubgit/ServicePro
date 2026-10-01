@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Complaints</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 70px;
+            background: #111827;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.4);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #1e293b;
+
+            padding: 10px 18px;
+            border-radius: 8px;
+
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #334155;
+        }
+
+
+        /* MAIN */
+
+        .container {
+            padding: 40px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .heading h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #94a3b8;
+        }
+
+
+        /* COMPLAINT GRID */
+
+        .complaint-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(350px, 1fr));
+
+            gap: 25px;
+        }
+
+
+        /* CARD */
+
+        .complaint-card {
+            background: #1e293b;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.3);
+
+            transition: 0.3s;
+        }
+
+        .complaint-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,0.5);
+        }
+
+
+        /* HEADER */
+
+        .complaint-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .complaint-header h2 {
+            font-size: 20px;
+        }
+
+        .complaint-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            background: #172554;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #38bdf8;
+
+            font-size: 20px;
+        }
+
+
+        /* CUSTOMER */
+
+        .customer {
+            border-bottom: 1px solid #334155;
+
+            padding-bottom: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .customer-name {
+            font-size: 18px;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+        .customer-email {
+            color: #94a3b8;
+
+            font-size: 14px;
+        }
+
+
+        /* COMPLAINT TEXT */
+
+        .complaint-text {
+            background: #111827;
+
+            padding: 16px;
+
+            border-radius: 10px;
+
+            color: #cbd5e1;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* DATE */
+
+        .date {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #94a3b8;
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+        .date i {
+            color: #38bdf8;
+        }
+
+
+        /* STATUS */
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 14px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #854d0e;
+
+            color: #fde68a;
+        }
+
+        .replied {
+            background: #166534;
+
+            color: #bbf7d0;
+        }
+
+
+        /* REPLY BUTTON */
+
+        .reply-btn {
+            display: block;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            background: #0ea5e9;
+
+            color: white;
+
+            padding: 11px;
+
+            border-radius: 8px;
+
+            margin-top: 20px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .reply-btn:hover {
+            background: #0284c7;
+        }
+
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+
+            padding: 70px 20px;
+
+            color: #94a3b8;
+        }
+
+        .empty i {
+            font-size: 55px;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media(max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+            .heading h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-user-shield"></i>
+
+            Admin Panel
+
+        </div>
+
+
+        <a href="/myapp/admin_home/"
+           class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+
+        <div class="heading">
+
+            <h1>Customer Complaints</h1>
+
+            <p>
+                View and respond to customer complaints
+            </p>
+
+        </div>
+
+
+
+        <div class="complaint-grid">
+
+
+            {% for i in data %}
+
+
+            <div class="complaint-card">
+
+
+                <!-- HEADER -->
+
+                <div class="complaint-header">
+
+                    <h2>
+                        Complaint #{{i.id}}
+                    </h2>
+
+                    <div class="complaint-icon">
+
+                        <i class="fa-solid fa-comment-dots"></i>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CUSTOMER -->
+
+                <div class="customer">
+
+                    <div class="customer-name">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        {{i.CUSTOMER.name}}
+
+                    </div>
+
+                    <div class="customer-email">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        {{i.CUSTOMER.email}}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- COMPLAINT -->
+
+                <div class="complaint-text">
+
+                    {{i.complaints}}
+
+                </div>
+
+
+
+                <!-- DATE -->
+
+                <div class="date">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                    {{i.date}}
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                {% if i.status == "replied" %}
+
+                    <span class="status replied">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Replied
+
+                    </span>
+
+                {% else %}
+
+                    <span class="status pending">Replay:
+
+                        <i class="fa-solid "></i>
+
+                        {{i.status}}
+
+                    </span>
+
+                {% endif %}
+
+
+
+                <!-- REPLY -->
+
+                {% if i.status == "pending" %}
+
+                <a href="/myapp/replay/{{i.id}}"
+                   class="reply-btn">
+
+                    <i class="fa-solid fa-reply"></i>
+
+                    Reply
+
+                </a>
+
+                {% endif %}
+
+
+            </div>
+
+
+            {% empty %}
+
+
+            <div class="empty">
+
+                <i class="fa-solid fa-comments"></i>
+
+                <h2>
+                    No Complaints Found
+                </h2>
+
+                <p>
+                    There are currently no customer complaints.
+                </p>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

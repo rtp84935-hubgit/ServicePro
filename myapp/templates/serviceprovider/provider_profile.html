@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Profile</title>
+
+    <link rel="stylesheet" href="view_profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+{% extends 'serviceprovider/provider_home.html' %}
+{% block body %}
+<body>
+
+<div class="profile-wrap">
+
+    <div class="badge">
+
+        <div class="badge-punch"></div>
+
+        <div class="badge-header">
+            <p class="badge-eyebrow">Provider ID</p>
+
+            <div class="badge-photo">
+                <img src="{{data.photo.url}}" alt="Profile">
+            </div>
+
+            <h2>Rahul TP</h2>
+            <p class="badge-role">{{data.servicetype}}</p>
+        </div>
+
+        <div class="badge-perf"></div>
+
+        <div class="badge-body">
+
+            <div class="field-row">
+                <label><i class="fa-solid fa-user"></i> Name</label>
+                <input type="text" name="name" value="{{data.name}}" readonly>
+            </div>
+
+            <div class="field-row">
+                <label><i class="fa-solid fa-envelope"></i> Email</label>
+                <input type="email" name="email" value="{{data.email}}" readonly>
+            </div>
+
+            <div class="field-row">
+                <label><i class="fa-solid fa-phone"></i> Phone Number</label>
+                <input type="text" name="phone" value="{{data.phone}}" readonly>
+            </div>
+
+            <div class="field-row">
+                <label><i class="fa-solid fa-location-dot"></i> Place</label>
+                <input type="text" name="place" value="{{data.place}}" readonly>
+            </div>
+
+            <div class="field-row">
+                <label><i class="fa-regular fa-calendar"></i> Date of Birth</label>
+                <input type="date" name="dob" value="{{data.dob |date:'Y-m-d'}}" readonly>
+            </div>
+
+            <div class="field-row">
+                <label><i class="fa-solid fa-venus-mars"></i> Gender</label>
+                <input type="text" name="gender" value="{{data.gender}}" readonly>
+            </div>
+
+            <div class="field-row">
+                <label><i class="fa-solid fa-screwdriver-wrench"></i> Service Type</label>
+                <input type="text" name="servicetype" value="{{data.servicetype}}" readonly>
+            </div>
+
+        </div>
+
+        <div class="badge-perf"></div>
+
+        <div class="badge-footer">
+            <a href="/myapp/provider_editprofile/" class="btn-edit">
+                <i class="fa-solid fa-pen"></i> Edit Profile
+            </a>
+
+            <a href="/myapp/provider_home/" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Go back
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root{
+        --ink:#0d1424;
+        --panel:#141d33;
+        --panel-raised:#182342;
+        --line:rgba(255,255,255,0.09);
+        --text:#eceef6;
+        --text-muted:#8b93ab;
+
+        --amber:#e9a23b;
+        --teal:#49b3a6;
+        --blue:#5b8dbe;
+
+        --nav-width:260px;
+    }
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Inter',sans-serif;
+    }
+
+    body{
+        min-height:100vh;
+        background:
+            radial-gradient(1100px 480px at 12% -10%, rgba(91,141,190,0.14), transparent),
+            radial-gradient(900px 420px at 100% 0%, rgba(233,162,59,0.10), transparent),
+            var(--ink);
+        color:var(--text);
+        padding:48px 40px;
+    }
+
+    .profile-wrap{
+        width:100%;
+        min-height:calc(100vh - 96px);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding-left:calc(var(--nav-width) + 40px);
+    }
+
+    @media (max-width:900px){
+        .profile-wrap{
+            padding-left:0;
+        }
+    }
+
+    /* Badge card */
+
+    .badge{
+        position:relative;
+        width:480px;
+        max-width:100%;
+        background:var(--panel);
+        border:1px solid var(--line);
+        border-radius:20px;
+        overflow:hidden;
+        box-shadow:0 24px 60px -24px rgba(0,0,0,0.65);
+    }
+
+    .badge-punch{
+        position:absolute;
+        top:14px;
+        left:50%;
+        transform:translateX(-50%);
+        width:46px;
+        height:10px;
+        border-radius:6px;
+        background:var(--ink);
+        box-shadow:inset 0 2px 4px rgba(0,0,0,0.6);
+        z-index:2;
+    }
+
+    .badge-header{
+        background:linear-gradient(160deg,#1c2c52,#141d33);
+        text-align:center;
+        padding:46px 30px 26px;
+    }
+
+    .badge-eyebrow{
+        font-family:'JetBrains Mono',monospace;
+        font-size:11px;
+        letter-spacing:0.26em;
+        text-transform:uppercase;
+        color:var(--amber);
+        margin-bottom:18px;
+    }
+
+    .badge-photo{
+        width:120px;
+        height:120px;
+        margin:0 auto 16px;
+        border-radius:50%;
+        padding:4px;
+        background:linear-gradient(135deg,var(--amber),var(--teal));
+    }
+
+    .badge-photo img{
+        width:100%;
+        height:100%;
+        border-radius:50%;
+        object-fit:cover;
+        display:block;
+        border:3px solid var(--panel);
+    }
+
+    .badge-header h2{
+        font-family:'Space Grotesk',sans-serif;
+        font-weight:700;
+        font-size:26px;
+        margin-bottom:6px;
+    }
+
+    .badge-role{
+        font-family:'JetBrains Mono',monospace;
+        font-size:13px;
+        color:var(--blue);
+        letter-spacing:0.04em;
+    }
+
+    .badge-perf{
+        border-top:2px dashed var(--line);
+        margin:0 26px;
+    }
+
+    .badge-body{
+        padding:26px 30px;
+        display:flex;
+        flex-direction:column;
+        gap:16px;
+    }
+
+    .field-row label{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        color:var(--text-muted);
+        margin-bottom:7px;
+        font-size:12px;
+        font-weight:600;
+        letter-spacing:0.04em;
+        text-transform:uppercase;
+    }
+
+    .field-row label i{
+        color:var(--amber);
+        width:12px;
+        font-size:11px;
+    }
+
+    .field-row input{
+        width:100%;
+        height:46px;
+        border:1px solid var(--line);
+        outline:none;
+        border-radius:10px;
+        padding:0 14px;
+        background:var(--panel-raised);
+        color:var(--text);
+        font-size:14.5px;
+        font-family:'JetBrains Mono',monospace;
+    }
+
+    .field-row input:focus{
+        border-color:var(--blue);
+    }
+
+    .badge-footer{
+        padding:24px 30px 32px;
+        text-align:center;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:14px;
+    }
+
+    .btn-edit{
+        display:inline-flex;
+        align-items:center;
+        gap:9px;
+        text-decoration:none;
+        background:linear-gradient(135deg,var(--amber),#f4c46a);
+        color:#2b1d05;
+        padding:13px 32px;
+        border-radius:10px;
+        font-size:15px;
+        font-weight:700;
+        transition:transform .2s ease, box-shadow .2s ease;
+    }
+
+    .btn-edit:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 24px -10px rgba(233,162,59,0.55);
+    }
+
+    .back-link{
+        color:var(--blue);
+        text-decoration:none;
+        font-weight:600;
+        font-size:13.5px;
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+    }
+
+    .back-link:hover{
+        color:var(--text);
+    }
+
+    @media (max-width:520px){
+        .badge{
+            width:100%;
+        }
+        body{
+            padding:32px 20px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        .btn-edit{
+            transition:none;
+        }
+    }
+</style>
+
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,922 @@
+{% extends 'customer/customer_home.html' %}
+{% block body %}
+
+<body>
+
+
+
+
+
+<!-- Profile Section -->
+
+
+<div class="profile-container">
+
+
+
+    <div class="profile-card">
+
+
+
+        <!-- Profile Image -->
+
+        <div class="profile-image">
+
+
+            <img src="{{datas.photo.url}}" alt="Profile">
+
+
+            <div class="camera">
+
+                <i class="fa-solid fa-camera"></i>
+
+            </div>
+
+
+        </div>
+
+
+
+
+        <!-- Name -->
+
+
+        <h1>
+
+           {{datas.name}}
+
+        </h1>
+
+
+        <p class="role">
+
+            Customer
+
+        </p>
+
+
+
+
+        <!-- Details -->
+
+
+        <div class="details">
+
+
+            <div class="detail-box">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <div>
+
+                    <span>Email</span>
+
+                    <p>
+                        {{datas.email}}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="detail-box">
+
+                <i class="fa-solid fa-phone"></i>
+
+                <div>
+
+                    <span>Phone</span>
+
+                    <p>
+                       {{datas.phone}}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+
+            <div class="detail-box">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <div>
+
+                    <span>Place</span>
+
+                    <p>
+                        {{datas.place}}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+
+            <div class="detail-box">
+
+                <i class="fa-solid fa-calendar"></i>
+
+                <div>
+
+                    <span>Date of Birth</span>
+
+                    <p>
+                       {{datas.dob}}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <!-- Buttons -->
+
+
+        <div class="actions">
+
+
+            <a href="/myapp/edit_customer_profile/{{datas.id}}" class="edit-btn">
+
+                <i class="fa-solid fa-pen"></i>
+
+                Edit Profile
+
+            </a>
+
+
+            <a href="/myapp/changepassword/" class="password-btn">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Change Password
+
+            </a>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+<style>
+    /*=========================================
+            GOOGLE FONT
+=========================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+/*=========================================
+                RESET
+=========================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+
+body{
+
+    min-height:100vh;
+
+    background:#020617;
+
+    color:white;
+
+    position:relative;
+
+}
+
+
+
+/*=========================================
+        BACKGROUND EFFECT
+=========================================*/
+
+
+body::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+
+    height:500px;
+
+    background:#2563eb;
+
+    border-radius:50%;
+
+    filter:blur(180px);
+
+    opacity:.18;
+
+    top:-150px;
+
+    left:-150px;
+
+}
+
+
+
+body::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:400px;
+
+    height:400px;
+
+    background:#06b6d4;
+
+    border-radius:50%;
+
+    filter:blur(180px);
+
+    opacity:.15;
+
+    bottom:-100px;
+
+    right:-100px;
+
+}
+
+
+
+/*=========================================
+                NAVBAR
+=========================================*/
+
+
+.navbar{
+
+    height:80px;
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 60px;
+
+    background:#0f172a;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+
+
+.logo{
+
+    color:white;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+}
+
+
+.logo i{
+
+    color:#3b82f6;
+
+}
+
+
+
+.nav-links{
+
+    display:flex;
+
+    gap:30px;
+
+}
+
+
+.nav-links a{
+
+    text-decoration:none;
+
+    color:#94a3b8;
+
+    font-size:15px;
+
+    display:flex;
+
+    gap:8px;
+
+    align-items:center;
+
+    transition:.3s;
+
+}
+
+
+.nav-links a:hover{
+
+    color:#3b82f6;
+
+}
+
+
+
+/*=========================================
+        PROFILE CONTAINER
+=========================================*/
+
+
+.profile-container{
+
+    width:100%;
+
+    min-height:calc(100vh - 80px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+    position:relative;
+
+    z-index:3;
+
+}
+
+
+
+/*=========================================
+        PROFILE CARD
+=========================================*/
+
+
+.profile-card{
+
+    width:500px;
+
+    background:#0f172a;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    text-align:center;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+    position:relative;
+
+}
+
+
+
+/*=========================================
+        PROFILE IMAGE
+=========================================*/
+
+
+.profile-image{
+
+    width:150px;
+
+    height:150px;
+
+    margin:auto;
+
+    position:relative;
+
+}
+
+
+.profile-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:5px solid #2563eb;
+
+}
+
+
+
+.camera{
+
+    position:absolute;
+
+    bottom:5px;
+
+    right:10px;
+
+    width:40px;
+
+    height:40px;
+
+    background:#2563eb;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+}
+
+
+
+.camera i{
+
+    color:white;
+
+}
+
+
+
+/*=========================================
+            NAME
+=========================================*/
+
+
+.profile-card h1{
+
+    margin-top:25px;
+
+    font-size:32px;
+
+}
+
+
+.role{
+
+    color:#3b82f6;
+
+    margin-top:5px;
+
+    font-weight:500;
+
+}/*=========================================
+            DETAILS SECTION
+=========================================*/
+
+.details{
+
+    margin-top:35px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+.detail-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    background:#111827;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    padding:18px;
+
+    border-radius:15px;
+
+    text-align:left;
+
+    transition:.35s;
+
+}
+
+
+.detail-box:hover{
+
+    transform:translateX(8px);
+
+    border-color:#2563eb;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.2);
+
+}
+
+
+.detail-box i{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:12px;
+
+    background:#2563eb;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:18px;
+
+}
+
+
+.detail-box span{
+
+    display:block;
+
+    color:#64748b;
+
+    font-size:13px;
+
+}
+
+
+.detail-box p{
+
+    color:white;
+
+    font-size:15px;
+
+    margin-top:3px;
+
+}
+
+
+
+/*=========================================
+            ACTION BUTTONS
+=========================================*/
+
+
+.actions{
+
+    margin-top:35px;
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+
+.actions a{
+
+    flex:1;
+
+    height:50px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    text-decoration:none;
+
+    border-radius:12px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+
+
+.edit-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+
+
+.password-btn{
+
+    background:#1e293b;
+
+    color:white;
+
+    border:1px solid #334155;
+
+}
+
+
+
+.edit-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 12px 25px rgba(37,99,235,.35);
+
+}
+
+
+
+.password-btn:hover{
+
+    background:#2563eb;
+
+    border-color:#2563eb;
+
+    transform:translateY(-4px);
+
+}
+
+
+
+/*=========================================
+            CARD ANIMATION
+=========================================*/
+
+
+.profile-card{
+
+    animation:profileShow .8s ease;
+
+}
+
+
+
+@keyframes profileShow{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+/*=========================================
+        IMAGE ANIMATION
+=========================================*/
+
+
+.profile-image{
+
+    animation:pulse 3s infinite;
+
+}
+
+
+
+@keyframes pulse{
+
+
+    0%{
+
+        box-shadow:
+        0 0 0 0 rgba(37,99,235,.5);
+
+    }
+
+
+    70%{
+
+        box-shadow:
+        0 0 0 25px rgba(37,99,235,0);
+
+    }
+
+
+    100%{
+
+        box-shadow:
+        0 0 0 0 rgba(37,99,235,0);
+
+    }
+
+}
+
+
+
+/*=========================================
+            RESPONSIVE TABLET
+=========================================*/
+
+
+@media(max-width:768px){
+
+
+.navbar{
+
+    padding:0 25px;
+
+}
+
+
+.logo{
+
+    font-size:22px;
+
+}
+
+
+.nav-links{
+
+    gap:15px;
+
+}
+
+
+
+.profile-container{
+
+    padding:25px;
+
+}
+
+
+.profile-card{
+
+    width:100%;
+
+    padding:30px 20px;
+
+}
+
+
+}
+
+
+
+/*=========================================
+            MOBILE
+=========================================*/
+
+
+@media(max-width:520px){
+
+
+.navbar{
+
+    height:auto;
+
+    padding:20px;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+.nav-links{
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+}
+
+
+.profile-image{
+
+    width:120px;
+
+    height:120px;
+
+}
+
+
+.profile-card h1{
+
+    font-size:26px;
+
+}
+
+
+.actions{
+
+    flex-direction:column;
+
+}
+
+
+.actions a{
+
+    width:100%;
+
+}
+
+
+.detail-box{
+
+    padding:15px;
+
+}
+
+
+}
+
+
+
+/*=========================================
+            SCROLLBAR
+=========================================*/
+
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+
+::-webkit-scrollbar-track{
+
+    background:#020617;
+
+}
+
+
+::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+
+    border-radius:20px;
+
+}
+</style>
+</body>
+
+{% endblock %}
